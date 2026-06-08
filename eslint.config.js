@@ -1,5 +1,5 @@
 // Base flat ESLint config for the monorepo. Package-level eslint.config.js files
-// import and extend this (apps/web adds React rules). backend/ (Deno) is linted
+// import and extend this (frontend adds React rules). backend/ (Deno) is linted
 // by its own toolchain, not this Node config.
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";

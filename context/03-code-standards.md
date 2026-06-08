@@ -5,7 +5,7 @@ These are derived from the project's code-review notes. Each rule maps to a revi
 ## TypeScript
 - **No `any`.** (R12) Use precise types. If a type is truly unknown at a boundary, use `unknown` and narrow it. `any` fails review.
 - `strict: true` in `tsconfig`. Treat type errors as build failures.
-- Shared types (deal, payment, brand, API envelope, etc.) live in one place (the `packages/shared` workspace, `@influency/shared`) and are imported by both frontend and edge functions. One definition, two consumers.
+- Shared types (deal, payment, brand, API envelope, etc.) live in one place (`backend/shared`, imported by the frontend via the `@shared` alias and by Deno edge functions by relative path). One definition, two consumers.
 
 ## Interfaces & modularity
 - **Interfaces are modularized, not dumped in one file.** (R3) Co-locate a type with its domain (e.g. `features/deals/deal.types.ts`), or in `shared/types/<domain>.ts`. No `types.ts` god-file.
@@ -37,7 +37,7 @@ These are derived from the project's code-review notes. Each rule maps to a revi
 ## Folder structure (monorepo: pnpm workspaces + Turborepo)
 Root: `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`, `.gitignore`, `.env.example`.
 
-Frontend — `apps/web/`:
+Frontend — `frontend/`:
 ```
 src/
   main.tsx, App.tsx
@@ -52,22 +52,16 @@ src/
   hooks/      useDeals.ts usePayments.ts ...   # TanStack Query wrappers
   locales/    ar/common.json  en/common.json
 ```
-Shared — `packages/shared/` (`@influency/shared`):
-```
-src/
-  types/      api.ts                 # response envelope + ApiResponse type
-  constants/  http.ts                # HTTP status codes (one definition; web re-exports)
-  index.ts                           # public surface
-```
 Backend — `backend/` (InsForge artifacts; not a published app):
 ```
 backend/
+  shared/     api.ts  http.ts  index.ts   # shared types + envelope; frontend imports via @shared
   functions/  extract-snap-report/  mark-payment-received/  ...   # Deno edge functions
   migrations/ NNNN_<name>.sql        # tables, RLS policies, indexes, RPC
   config/     env.ts                 # Deno env reader
   insforge.toml                      # config-as-code (auth, storage limits, SMTP, retention)
 ```
-> The frontend `constants/http.ts` re-exports the HTTP status codes from `@influency/shared` so there is a single definition shared with the edge functions — no duplicated magic values.
+> The frontend `constants/http.ts` re-exports the HTTP status codes from `@shared/http` (`backend/shared`) so there is a single definition shared with the edge functions — no duplicated magic values.
 
 ## Naming
 - Files: `kebab-case` for routes/folders, `PascalCase.tsx` for components, `camelCase.ts` for utilities/hooks.

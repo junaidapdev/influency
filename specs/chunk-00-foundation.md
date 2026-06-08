@@ -6,12 +6,12 @@
 Stand up the monorepo and make every code standard *real before any feature code exists*, so rules are enforced from line one rather than retrofitted.
 
 ## In scope
-- Monorepo via **pnpm workspaces + Turborepo**: `apps/web`, `packages/shared`, `backend/`, plus committed `/context`, `/specs`, `/docs`. Root config: `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`. Commit `AGENTS.md` and `CLAUDE.md` at root.
-- Frontend (`apps/web`): Vite + React 18 + TypeScript (`strict: true`), Tailwind CSS + shadcn/ui, React Router v6, TanStack Query provider, react-i18next bootstrap (catalogs can be near-empty), ESLint + Prettier (lint rule flagging `console.log`).
+- Monorepo via **pnpm workspaces + Turborepo**: top-level `frontend/` and `backend/` (with `backend/shared`), plus committed `/context`, `/specs`, `/docs`. Root config: `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`. Commit `AGENTS.md` and `CLAUDE.md` at root.
+- Frontend (`frontend/`): Vite + React + TypeScript (`strict: true`), Tailwind CSS + shadcn/ui, React Router, TanStack Query provider, react-i18next bootstrap (catalogs can be near-empty), ESLint + Prettier (lint rule flagging `console.log`).
 - `config/env.ts` (frontend) — read + validate env vars once (zod), export typed config. No direct `import.meta.env` elsewhere.
 - `constants/` modules: `http.ts` (status codes), `routes.ts`, `queryKeys.ts`, `errors.ts`. Seed with what's known.
-- `packages/shared` (`@influency/shared`): `types/api.ts` + helpers `ok(data)` / `fail(code, message)` (the one response envelope) and `constants/http.ts` (status codes). The frontend `constants/http.ts` re-exports these.
-- `apps/web/src/lib/insforge.ts` — SDK client (pinned `@insforge/sdk` version), reading config from `config/env.ts`.
+- `backend/shared`: `api.ts` + helpers `ok(data)` / `fail(code, message)` (the one response envelope) and `http.ts` (status codes). The frontend `constants/http.ts` re-exports these via `@shared/http`.
+- `frontend/src/lib/insforge.ts` — SDK client (pinned `@insforge/sdk` version), reading config from `config/env.ts`.
 - Backend: `backend/functions/`, `backend/migrations/`, `backend/config/env.ts`, `backend/insforge.toml` scaffolding (empty but structured). Confirm edge-function shape via InsForge CLI docs (`npx @insforge/cli docs ...`) — the InsForge MCP `fetch-docs` is the equivalent if the MCP is connected.
 - `.gitignore`: `node_modules`, build output, `.env*`, `.cursor/`, `.DS_Store`, scratch `*Fix.md` / scratch notes. Do **not** ignore `/context`, `/specs`, `/docs`, `README`.
 

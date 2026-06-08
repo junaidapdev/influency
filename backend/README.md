@@ -14,7 +14,8 @@ insforge.toml # config-as-code: auth, storage limits, SMTP, retention (apply wit
 - **Tenant isolation = Postgres RLS.** Every app table ships with `user_id = auth.uid()` policies in
   the same migration that creates it. RLS is the security; client filters are convenience only.
 - **One response envelope** for every edge function: `ok(data)` / `fail(code, message)` from
-  `@influency/shared` (imported by relative `.ts` path from Deno).
+  `backend/shared` (imported by relative `.ts` path; the frontend imports the same files via the
+  `@shared` alias).
 - **Atomic multi-row writes** run inside a Postgres function (RPC) called from the edge function.
 - **Secrets** live in InsForge secret config, surfaced through `config/env.ts`. Never committed.
 

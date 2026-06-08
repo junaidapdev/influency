@@ -1,6 +1,6 @@
 /**
  * HTTP status codes used by the edge functions we own (R11). One definition, shared with the
- * web app (which re-exports these from `apps/web/src/constants/http.ts`) — no duplicated values.
+ * frontend (which re-exports these from `frontend/src/constants/http.ts`) — no duplicated values.
  */
 export const HTTP_STATUS = {
   OK: 200,

@@ -22,9 +22,9 @@ prompts/
 ## Code layout (added by chunk 00)
 The app is a **pnpm + Turborepo monorepo** (see `context/02-architecture.md`):
 ```
-apps/web/         # Vite + React 18 + TS frontend (→ Vercel)
-packages/shared/  # @influency/shared — types + API envelope shared by web and edge functions
+frontend/         # Vite + React + TS frontend (→ Vercel) — the only Node/pnpm package
 backend/          # InsForge artifacts: edge functions (Deno), SQL migrations, insforge.toml
+  shared/         # shared TS types + API envelope; frontend imports via the @shared alias
 ```
 
 ## Toolchain
