@@ -1,0 +1,7 @@
+# pnpm workspaces. `backend/` is intentionally NOT a workspace package —
+# it holds InsForge artifacts (Deno edge functions + SQL migrations), not a Node package.
+packages:
+  - "apps/*"
+  - "packages/*"
+minimumReleaseAgeExclude:
+  - react-hook-form@7.78.0
