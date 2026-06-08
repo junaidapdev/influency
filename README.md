@@ -13,6 +13,7 @@ context/
   04-ai-workflow-rules.md      # how the agent works: read-first, one chunk, no scope creep, ask when unclear
   05-ui-context.md             # visual style, colors, type, layout, loading/empty/error states, dates
   06-progress-tracker.md       # current phase, completed/in-progress/blocked, decisions log, next steps
+  07-mobile-readiness.md       # rules to keep feature code portable to a future React Native app
 specs/
   chunk-00..09-*.md            # one implementation spec per chunk — the "active feature spec"
 prompts/

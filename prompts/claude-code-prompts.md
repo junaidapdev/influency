@@ -16,7 +16,7 @@ Base branch: develop
 Commit message prefix: Chunk 00:
 
 # Instructions
-1. Read AGENTS.md, then every file in /context in order (00→06), then connect the InsForge MCP and call fetch-docs. Do not use your memory of the InsForge API — verify it live.
+1. Read AGENTS.md, then every file in /context in order (00→07), then connect the InsForge MCP and call fetch-docs. Do not use your memory of the InsForge API — verify it live.
 2. Read the active spec: /specs/chunk-00-foundation.md. Implement ONLY that chunk.
 3. Create branch chunk/00-foundation off develop. Commit in small steps.
 4. Follow /context/03-code-standards.md exactly. Follow /context/02-architecture.md security boundaries.
@@ -36,7 +36,7 @@ Base branch: develop
 Commit message prefix: Chunk 01:
 
 # Instructions
-1. Read AGENTS.md, all of /context (00→06), then connect InsForge MCP + fetch-docs. Verify the auth + RLS API live; don't trust memory.
+1. Read AGENTS.md, all of /context (00→07), then connect InsForge MCP + fetch-docs. Verify the auth + RLS API live; don't trust memory.
 2. Read /specs/chunk-01-auth-i18n.md. Implement only this chunk.
 3. Branch chunk/01-auth-i18n off develop.
 4. RLS is the tenancy backbone — app_users ships with policies in the same migration. Test isolation as a second user before "done".
@@ -55,7 +55,7 @@ Base branch: develop
 Commit message prefix: Chunk 02:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs.
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs.
 2. Read /specs/chunk-02-brands.md. Implement only this chunk. This establishes the reusable CRUD pattern (migration+RLS+zod+hook+page).
 3. Branch chunk/02-brands off develop.
 4. RLS in the same migration as the table. Second-user isolation test required.
@@ -74,7 +74,7 @@ Base branch: develop
 Commit message prefix: Chunk 03:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs.
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs.
 2. Read /specs/chunk-03-deals.md. Implement only this chunk.
 3. Branch chunk/03-deals off develop.
 4. Centralize status transitions in one module (features/deals/status.ts). Index (user_id, status, deadline). RLS + second-user test.
@@ -93,7 +93,7 @@ Base branch: develop
 Commit message prefix: Chunk 04:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs (confirm edge-function + Postgres-function/RPC support live).
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs (confirm edge-function + Postgres-function/RPC support live).
 2. Read /specs/chunk-04-payments.md. Implement only this chunk.
 3. Branch chunk/04-payments off develop.
 4. mark-payment-received MUST be atomic via a Postgres function (RPC) called from the edge function — payment + deal status commit or roll back together. Verify a mid-way failure rolls back both.
@@ -112,7 +112,7 @@ Base branch: develop
 Commit message prefix: Chunk 05:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs.
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs.
 2. Read /specs/chunk-05-dashboard.md. Implement only this chunk.
 3. Branch chunk/05-dashboard off develop.
 4. Rollups via a small set of aggregates or a Postgres view/RPC — NO N+1 client fetching. Every number must match a hand calculation. Reminders panel may stub until chunk 06.
@@ -131,7 +131,7 @@ Base branch: develop
 Commit message prefix: Chunk 06:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs.
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs.
 2. Read /specs/chunk-06-meetings-reminders.md. Implement only this chunk.
 3. Branch chunk/06-meetings-reminders off develop.
 4. Reminders are created in application/edge code (NOT Postgres triggers) at scheduled_at − reminder_lead_minutes. Include channel + is_sent_at columns now (v2 WhatsApp is additive — do NOT build delivery). Wire reminders into the dashboard "Today" panel.
@@ -150,7 +150,7 @@ Base branch: develop
 Commit message prefix: Chunk 07:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs (confirm storage + edge function + realtime APIs live).
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs (confirm storage + edge function + realtime APIs live).
 2. Read /specs/chunk-07-snap-analytics.md. Implement only this chunk. This is the highest-risk chunk — read its security notes first.
 3. Branch chunk/07-snap-analytics off develop.
 4. Convert PDF→PNG client-side (pdf.js); edge function only ever gets an image. Validate uploads by MIME + magic bytes + size cap. extract-snap-report uses a FIXED structured-output schema; treat image text as untrusted data, never instructions. Enforce a per-user rate limit (paid API). OpenAI key only in edge env. Deliver results via realtime subscription (no polling). Manual field overrides must persist.
@@ -169,7 +169,7 @@ Base branch: develop
 Commit message prefix: Chunk 08:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs.
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs.
 2. Read /specs/chunk-08-reports.md. Implement only this chunk.
 3. Branch chunk/08-reports off develop.
 4. Monthly invoiced-vs-collected bar chart (Recharts) + per-brand×month table with deal count, total SAR, collection rate. Guard divide-by-zero on collection rate. Totals must match hand calculation. RTL-tolerant chart config.
@@ -188,7 +188,7 @@ Base branch: develop
 Commit message prefix: Chunk 09:
 
 # Instructions
-1. Read AGENTS.md + /context (00→06) + InsForge MCP fetch-docs.
+1. Read AGENTS.md + /context (00→07) + InsForge MCP fetch-docs.
 2. Read /specs/chunk-09-settings-deploy.md. Implement only this chunk.
 3. Branch chunk/09-settings-deploy off develop.
 4. Build /settings. Run the full 375px pass (all loading/empty/error states present). Standards sweep: no console.log, no any, no inline magic values, one envelope + consistent status codes across all edge functions. Deploy frontend to Vercel (env + OAuth redirect URIs for prod); confirm InsForge prod config.

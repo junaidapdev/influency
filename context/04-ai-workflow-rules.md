@@ -3,7 +3,7 @@
 Rules for how an AI coding agent works on this repo. (`AGENTS.md` is the master; this expands the workflow specifics.)
 
 ## Before coding
-1. **Read context first.** `AGENTS.md` → `/context/01`…`06` → this file. Every session, not just the first.
+1. **Read context first.** `AGENTS.md` → `/context/01`…`07` → this file. Every session, not just the first.
 2. **Pull live InsForge docs.** Connect the InsForge MCP, call `fetch-docs`. Do not write backend code from memory of the InsForge API — verify the current surface (auth, RLS, storage, edge-function signature, realtime API) first.
 3. **Read the active spec.** Open `/context/00-chunk-map.md`, find the active chunk, read its `/specs/chunk-NN-*.md`. That spec + context = the full brief.
 

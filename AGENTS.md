@@ -5,7 +5,7 @@
 ## 1. Reading order — do this every session, before writing any code
 
 1. Read this file (`AGENTS.md`) fully.
-2. Read every file in `/context` in numeric order (`01` → `06`). These are the project's *steering files*: stable rules that rarely change.
+2. Read every file in `/context` in numeric order (`01` → `07`). These are the project's *steering files*: stable rules that rarely change.
 3. Connect the **InsForge MCP** and call its `fetch-docs` tool. Do **not** rely on your own memory of the InsForge API — it is a young platform and your training data may be wrong or stale. Treat the live docs as authoritative.
 4. Read `/context/00-chunk-map.md` to see the full plan and which chunk is active.
 5. Read the **active feature spec** in `/specs/` for the current chunk. That spec, plus these context files, is your complete brief.
