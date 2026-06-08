@@ -6,7 +6,7 @@ import { z } from "zod";
  * in a feature later. (Lint enforces the no-import.meta.env-elsewhere rule; see eslint.config.js.)
  */
 const envSchema = z.object({
-  VITE_INSFORGE_BASE_URL: z.url(),
+  VITE_INSFORGE_URL: z.url(),
   VITE_INSFORGE_ANON_KEY: z.string().min(1),
 });
 
@@ -18,6 +18,6 @@ if (!parsed.success) {
 }
 
 export const env = {
-  insforgeBaseUrl: parsed.data.VITE_INSFORGE_BASE_URL,
+  insforgeUrl: parsed.data.VITE_INSFORGE_URL,
   insforgeAnonKey: parsed.data.VITE_INSFORGE_ANON_KEY,
 } as const;

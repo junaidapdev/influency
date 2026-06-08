@@ -9,6 +9,6 @@ import { env } from "@/config/env";
  * chunks. Created here at module load but not exercised until chunk 01 (auth).
  */
 export const insforge = createClient({
-  baseUrl: env.insforgeBaseUrl,
+  baseUrl: env.insforgeUrl,
   anonKey: env.insforgeAnonKey,
 });
