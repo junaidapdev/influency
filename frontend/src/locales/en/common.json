@@ -1,0 +1,14 @@
+{
+  "app": {
+    "name": "Influency",
+    "tagline": "Run your brand-deal business in one place."
+  },
+  "language": {
+    "label": "Language",
+    "switchTo": "العربية"
+  },
+  "home": {
+    "title": "Dashboard",
+    "empty": "Foundation ready. Features arrive in the next chunks."
+  }
+}

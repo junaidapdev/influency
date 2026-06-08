@@ -1,0 +1,51 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+build/
+*.tsbuildinfo
+.turbo/
+
+# env (never commit real values; .env.example is tracked)
+.env
+.env.*
+!.env.example
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# local preview helper (per-developer; arbitrary port) — not part of the shared toolchain
+.claude/launch.json
+
+# InsForge MCP per-developer credentials (browser-OAuth bound) — never commit
+.cursor/
+
+# scratch fix-notes (R1, R2). Project docs live in /context, /specs, /docs — those stay tracked.
+*Fix.md
+*fix.md
+scratch-*.md
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# InsForge & AI agent skills
+.insforge
+.agent
+.agents
+.augment
+.claude
+.cline
+.github/copilot*
+.kilocode
+.qoder
+.qwen
+.roo
+.trae
+.windsurf

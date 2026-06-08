@@ -1,0 +1,6 @@
+# pnpm workspace. The frontend is the only Node package. `backend/` holds InsForge
+# artifacts (Deno edge functions, SQL migrations, shared TS types) and is NOT a Node package.
+packages:
+  - "frontend"
+minimumReleaseAgeExclude:
+  - react-hook-form@7.78.0

@@ -1,0 +1,17 @@
+# InsForge config-as-code. Apply with: npx @insforge/cli config apply
+# Secrets are referenced as env(NAME) and are NEVER stored in this file (it is committed).
+# This is a structured stub for chunk 00. Later chunks fill it in:
+#   - chunk 01: [auth] — enable Google OAuth + email/password, require email verification
+#   - chunk 07: [storage] — upload size limits for Snap screenshots
+#
+# Run `npx @insforge/cli config export` to generate the real file from the live project,
+# then commit the diff. Do not hand-write sections without confirming the schema via the CLI.
+
+# [auth]
+#   email_password_enabled = true
+#   email_verification_required = true
+#   [auth.oauth.google]
+#   enabled = true
+
+# [storage]
+#   max_upload_mb = 10
