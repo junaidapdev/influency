@@ -5,7 +5,7 @@ These are derived from the project's code-review notes. Each rule maps to a revi
 ## TypeScript
 - **No `any`.** (R12) Use precise types. If a type is truly unknown at a boundary, use `unknown` and narrow it. `any` fails review.
 - `strict: true` in `tsconfig`. Treat type errors as build failures.
-- Shared types (deal, payment, brand, API envelope, etc.) live in one place (`/backend/shared` or a `shared` workspace) and are imported by both frontend and edge functions. One definition, two consumers.
+- Shared types (deal, payment, brand, API envelope, etc.) live in one place (the `packages/shared` workspace, `@influency/shared`) and are imported by both frontend and edge functions. One definition, two consumers.
 
 ## Interfaces & modularity
 - **Interfaces are modularized, not dumped in one file.** (R3) Co-locate a type with its domain (e.g. `features/deals/deal.types.ts`), or in `shared/types/<domain>.ts`. No `types.ts` god-file.
@@ -34,12 +34,15 @@ These are derived from the project's code-review notes. Each rule maps to a revi
 ## Logging
 - **No `console.log` in committed code.** (R7) Use a tiny logger wrapper that is a no-op in production, or remove debug logging before commit. Lint should flag `console.log`.
 
-## Folder structure (frontend)
+## Folder structure (monorepo: pnpm workspaces + Turborepo)
+Root: `package.json`, `pnpm-workspace.yaml`, `turbo.json`, `tsconfig.base.json`, `.gitignore`, `.env.example`.
+
+Frontend — `apps/web/`:
 ```
 src/
   main.tsx, App.tsx
   routes/                 # one folder per page
-  components/             # shared UI; shadcn primitives
+  components/             # shared UI; shadcn primitives (components/ui)
   features/
     deals/ brands/ payments/ meetings/ snap/ reports/
       *.types.ts  *.api.ts  *.schema.ts (zod)  components/
@@ -49,14 +52,22 @@ src/
   hooks/      useDeals.ts usePayments.ts ...   # TanStack Query wrappers
   locales/    ar/common.json  en/common.json
 ```
-Backend:
+Shared — `packages/shared/` (`@influency/shared`):
+```
+src/
+  types/      api.ts                 # response envelope + ApiResponse type
+  constants/  http.ts                # HTTP status codes (one definition; web re-exports)
+  index.ts                           # public surface
+```
+Backend — `backend/` (InsForge artifacts; not a published app):
 ```
 backend/
-  functions/  extract-snap-report/  mark-payment-received/  ...
+  functions/  extract-snap-report/  mark-payment-received/  ...   # Deno edge functions
   migrations/ NNNN_<name>.sql        # tables, RLS policies, indexes, RPC
-  shared/     types/  schema/        # zod + TS shared with frontend
-  config/     env.ts
+  config/     env.ts                 # Deno env reader
+  insforge.toml                      # config-as-code (auth, storage limits, SMTP, retention)
 ```
+> The frontend `constants/http.ts` re-exports the HTTP status codes from `@influency/shared` so there is a single definition shared with the edge functions — no duplicated magic values.
 
 ## Naming
 - Files: `kebab-case` for routes/folders, `PascalCase.tsx` for components, `camelCase.ts` for utilities/hooks.

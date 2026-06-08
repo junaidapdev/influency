@@ -1,20 +1,26 @@
 # 02 — Architecture
 
 ## System design
-Single repository (**monorepo**), two top-level folders:
+Single repository (**monorepo**) managed with **pnpm workspaces + Turborepo**:
 
 ```
-/frontend     # Vite + React 18 + TS app (deploys to Vercel)
-/backend      # InsForge artifacts: edge functions (Deno/TS), SQL migrations, RPC, shared types
-/context      # steering files (this folder)
-/specs        # per-chunk implementation specs
-/docs         # any longer-form docs (NOT scratch *.md in repo root)
+apps/
+  web/          # Vite + React 18 + TS app (deploys to Vercel)
+packages/
+  shared/       # @influency/shared — TS types + zod schemas + API response envelope (consumed by web AND edge functions)
+backend/        # InsForge artifacts: edge functions (Deno/TS), SQL migrations, RPC, insforge.toml
+context/        # steering files (this folder)
+specs/          # per-chunk implementation specs
+docs/           # any longer-form docs (NOT scratch *.md in repo root)
+# root: package.json, pnpm-workspace.yaml, turbo.json, tsconfig.base.json, .gitignore, .env.example
 ```
+
+> **Shared types across two runtimes.** `packages/shared` is the single source for the API envelope and domain types. The frontend (Node/pnpm) imports it as the workspace package `@influency/shared`; Deno edge functions import the same `.ts` files by relative path (Deno reads TypeScript directly). One definition, two consumers, no drift.
 
 ### Deliberate deviation from the review notes
 The code review asked for **separate repositories** for backend and frontend (point 5). We are using **separate folders in one repo** instead. This is an intentional, recorded decision, not an oversight:
 - On InsForge the "backend" is not a server we run — it's edge functions + SQL migrations + RPC + config. There is very little to put in its own repo.
-- A monorepo lets the frontend and edge functions share TypeScript types from one place (`/backend/shared` or a `packages/shared` workspace), which kills a whole class of drift bugs.
+- A monorepo lets the frontend and edge functions share TypeScript types from one place (the `packages/shared` workspace, `@influency/shared`), which kills a whole class of drift bugs.
 - If the backend ever grows into a standalone API service, splitting then is cheap; splitting prematurely is not.
 
 ### InsForge model and its constraints (read before backend work)

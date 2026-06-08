@@ -4,7 +4,7 @@ The PRD broken into shippable chunks. Each chunk is one branch, one PR into `dev
 
 | # | Chunk | Branch | Depends on | Ships |
 |---|---|---|---|---|
-| 00 | Repo & tooling foundation | `chunk/00-foundation` | — | Monorepo, Vite+React+TS strict, Tailwind+shadcn, ESLint/Prettier, env→config module, constants/error/http modules, response-envelope helper, `.gitignore`, InsForge SDK client, committed `/context` + `AGENTS.md`. |
+| 00 | Repo & tooling foundation | `chunk/00-foundation` | — | pnpm + Turborepo monorepo (apps/web + packages/shared + backend), Vite+React+TS strict, Tailwind+shadcn, ESLint/Prettier, env→config module, constants/error/http modules, response-envelope helper, `.gitignore`, InsForge SDK client, committed `/context` + `AGENTS.md`. |
 | 01 | Auth + multi-tenancy + i18n/RTL shell | `chunk/01-auth-i18n` | 00 | Google + email/password auth, `app_users` row on first login, protected routes, base RLS pattern, language toggle (ar/en + dir), Hijri+Gregorian date helper, empty dashboard shell. |
 | 02 | Brands CRUD + RLS | `chunk/02-brands` | 01 | `brands` table + RLS + indexes, brands directory page, add/edit, empty state. |
 | 03 | Ad Deals + deliverables + status machine | `chunk/03-deals` | 02 | `ad_deals` table + RLS, deliverables jsonb, status transitions (pending→in_progress→posted), deals list + filters + add/edit modal. |
