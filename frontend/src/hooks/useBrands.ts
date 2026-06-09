@@ -14,12 +14,13 @@ export function useBrands() {
   const queryClient = useQueryClient();
 
   const brandsQuery = useQuery({
-    queryKey: queryKeys.brands(),
+    queryKey: queryKeys.brands(userId ?? ""),
     queryFn: () => listBrands(userId ?? ""),
     enabled: userId !== null,
   });
 
-  const invalidate = () => queryClient.invalidateQueries({ queryKey: queryKeys.brands() });
+  const invalidate = () =>
+    queryClient.invalidateQueries({ queryKey: queryKeys.brands(userId ?? "") });
 
   const createMutation = useMutation({
     mutationFn: (values: BrandFormValues) => createBrand(userId ?? "", values),
