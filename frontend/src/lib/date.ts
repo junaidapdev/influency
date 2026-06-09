@@ -23,3 +23,15 @@ export function formatDualCalendarDate(isoDate: string, locale: Locale): DualCal
     ? { primary: hijri, secondary: gregorian }
     : { primary: gregorian, secondary: hijri };
 }
+
+/**
+ * Today's date as a LOCAL-time `YYYY-MM-DD` string. Uses local calendar fields, not
+ * `toISOString()` (which is UTC and would record the wrong day near midnight for non-UTC users).
+ */
+export function todayIsoDate(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
