@@ -19,9 +19,10 @@ export function useDashboard() {
   const { user } = useAuth();
   const userId = user?.id ?? null;
   const today = todayIsoDate();
+  const month = today.slice(0, 7); // YYYY-MM — the summary's "current month" cache dimension.
 
   const summaryQuery = useQuery({
-    queryKey: queryKeys.dashboardSummary(userId ?? ""),
+    queryKey: queryKeys.dashboardSummary(userId ?? "", month),
     queryFn: getDashboardSummary,
     enabled: userId !== null,
   });
@@ -33,7 +34,7 @@ export function useDashboard() {
   });
 
   const overduePaymentsQuery = useQuery({
-    queryKey: queryKeys.overduePayments(userId ?? ""),
+    queryKey: queryKeys.overduePayments(userId ?? "", today),
     queryFn: () => listOverduePayments(userId ?? "", today),
     enabled: userId !== null,
   });
