@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { type Locale } from "@/constants/i18n";
+import { brandDetailPath } from "@/constants/routes";
 import { type Brand } from "@/features/brands/brand.types";
 
 // User-entered contact fields are untrusted: render as plain text only (no HTML / no dangerouslySetInnerHTML).
@@ -20,7 +22,9 @@ export function BrandListItem({
   return (
     <li className="flex items-start justify-between gap-3 rounded-md border p-4">
       <div className="min-w-0 space-y-1">
-        <p className="font-semibold">{primaryName}</p>
+        <Link className="font-semibold hover:underline" to={brandDetailPath(brand.id)}>
+          {primaryName}
+        </Link>
         <p className="text-sm text-muted-foreground">{secondaryName}</p>
         {hasContact && (
           <div className="pt-1 text-sm text-muted-foreground">
