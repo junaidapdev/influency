@@ -9,4 +9,6 @@ export const queryKeys = {
   dealsByUser: (userId: string) => ["deals", userId] as const,
   deals: (userId: string, filters: DealFilters) => ["deals", userId, filters] as const,
   payments: (userId: string) => ["payments", userId] as const,
+  dashboardSummary: (userId: string) => ["dashboard-summary", userId] as const,
+  overduePayments: (userId: string) => ["overdue-payments", userId] as const,
 } as const;

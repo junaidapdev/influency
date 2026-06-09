@@ -38,13 +38,19 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "subtitle": "Your workspace is ready. Deal data arrives in the next chunks.",
+    "subtitle": "This month at a glance.",
     "today": "Today",
+    "todayEmpty": "Nothing due in the next 24 hours.",
     "invoiced": "Invoiced this month",
-    "openItems": "Open items",
-    "emptyTitle": "No business data yet",
-    "emptyBody": "Brands, deals, payments, meetings, and Snap analytics will fill this dashboard as the next chunks land.",
-    "profileReady": "Profile ready. Reminder lead time: {{minutes}} minutes."
+    "collected": "Collected this month",
+    "outstanding": "Outstanding",
+    "dealsPosted": "Deals posted",
+    "dealsPending": "Deals pending",
+    "needsAttention": "Needs attention",
+    "allClear": "Nothing needs attention right now.",
+    "overduePayments": "Overdue payments",
+    "pastDeadline": "Past deadline, not posted",
+    "error": "We could not load your dashboard. Refresh to try again."
   },
   "nav": {
     "dashboard": "Dashboard",

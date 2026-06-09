@@ -1,21 +1,22 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { DASHBOARD_EMPTY_VALUES } from "@/constants/dashboard";
-import { type Locale } from "@/constants/i18n";
 import { useAuth } from "@/features/auth/auth.context";
-import { formatSar } from "@/lib/currency";
-import { formatDualCalendarDate } from "@/lib/date";
+import { useDashboard } from "@/hooks/useDashboard";
+import { NeedsAttentionPanel } from "@/features/dashboard/components/NeedsAttentionPanel";
+import { SummaryCards } from "@/features/dashboard/components/SummaryCards";
+import { TodayPanel } from "@/features/dashboard/components/TodayPanel";
+
+const SKELETON_KEYS = ["a", "b", "c", "d", "e"];
 
 export function DashboardPage() {
-  const { t, i18n } = useTranslation();
-  const { appUser, signOut } = useAuth();
-  const locale = i18n.language as Locale;
-  const today = formatDualCalendarDate(new Date().toISOString(), locale);
-  const emptyMoney = formatSar(DASHBOARD_EMPTY_VALUES.MONEY, locale);
+  const { t } = useTranslation();
+  const { signOut } = useAuth();
+  const { summaryQuery, overduePaymentsQuery, pastDeadlineDeals, dealTitleById, today } =
+    useDashboard();
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex items-center justify-between gap-3">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
           <p className="text-sm text-muted-foreground">{t("dashboard.subtitle")}</p>
@@ -25,31 +26,26 @@ export function DashboardPage() {
         </Button>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        <section className="rounded-md border p-4">
-          <p className="text-sm text-muted-foreground">{t("dashboard.today")}</p>
-          <p className="mt-2 font-semibold">{today.primary}</p>
-          <p className="text-sm text-muted-foreground">{today.secondary}</p>
-        </section>
-        <section className="rounded-md border p-4">
-          <p className="text-sm text-muted-foreground">{t("dashboard.invoiced")}</p>
-          <p className="mt-2 text-xl font-semibold tabular-nums">{emptyMoney}</p>
-        </section>
-        <section className="rounded-md border p-4">
-          <p className="text-sm text-muted-foreground">{t("dashboard.openItems")}</p>
-          <p className="mt-2 text-xl font-semibold tabular-nums">{DASHBOARD_EMPTY_VALUES.COUNT}</p>
-        </section>
-      </div>
+      {summaryQuery.isPending ? (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true">
+          {SKELETON_KEYS.map((key) => (
+            <div key={key} className="h-24 rounded-md bg-muted" />
+          ))}
+        </div>
+      ) : summaryQuery.isError ? (
+        <p className="text-sm text-red-600">{t("dashboard.error")}</p>
+      ) : summaryQuery.data ? (
+        <SummaryCards summary={summaryQuery.data} />
+      ) : null}
 
-      <section className="rounded-md border p-4">
-        <h2 className="font-semibold">{t("dashboard.emptyTitle")}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">{t("dashboard.emptyBody")}</p>
-        {appUser && (
-          <p className="mt-4 text-sm text-muted-foreground">
-            {t("dashboard.profileReady", { minutes: appUser.reminder_lead_minutes })}
-          </p>
-        )}
-      </section>
+      <div className="grid gap-3 lg:grid-cols-2">
+        <NeedsAttentionPanel
+          overduePayments={overduePaymentsQuery.data ?? []}
+          pastDeadlineDeals={pastDeadlineDeals}
+          dealTitleById={dealTitleById}
+        />
+        <TodayPanel meetings={today.meetings} reminders={today.reminders} />
+      </div>
     </section>
   );
 }

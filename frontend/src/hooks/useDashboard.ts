@@ -1,0 +1,72 @@
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { queryKeys } from "@/constants/queryKeys";
+import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
+import { ACTIVE_DEAL_STATUSES } from "@/constants/dashboard";
+import { useAuth } from "@/features/auth/auth.context";
+import { todayIsoDate } from "@/lib/date";
+import { listDeals } from "@/features/deals/deal.api";
+import { getDashboardSummary, listOverduePayments } from "@/features/dashboard/dashboard.api";
+import { type Deal } from "@/features/deals/deal.types";
+import { type TodayItem } from "@/features/dashboard/dashboard.types";
+
+/**
+ * Dashboard data: the month rollup via the aggregate RPC, plus the lists "Needs attention" needs.
+ * Past-deadline deals are derived from the (already-fetched, cache-shared) deals list — no extra
+ * query, no N+1. The Today panel's sources (meetings + reminders) are wired in chunk 06.
+ */
+export function useDashboard() {
+  const { user } = useAuth();
+  const userId = user?.id ?? null;
+  const today = todayIsoDate();
+
+  const summaryQuery = useQuery({
+    queryKey: queryKeys.dashboardSummary(userId ?? ""),
+    queryFn: getDashboardSummary,
+    enabled: userId !== null,
+  });
+
+  const dealsQuery = useQuery({
+    queryKey: queryKeys.deals(userId ?? "", EMPTY_DEAL_FILTERS),
+    queryFn: () => listDeals(userId ?? "", EMPTY_DEAL_FILTERS),
+    enabled: userId !== null,
+  });
+
+  const overduePaymentsQuery = useQuery({
+    queryKey: queryKeys.overduePayments(userId ?? ""),
+    queryFn: () => listOverduePayments(userId ?? "", today),
+    enabled: userId !== null,
+  });
+
+  const deals = useMemo(() => dealsQuery.data ?? [], [dealsQuery.data]);
+
+  const pastDeadlineDeals = useMemo<Deal[]>(
+    () =>
+      deals.filter(
+        (deal) =>
+          deal.deadline !== null &&
+          deal.deadline < today &&
+          ACTIVE_DEAL_STATUSES.includes(deal.status),
+      ),
+    [deals, today],
+  );
+
+  const dealTitleById = useMemo(
+    () => new Map(deals.map((deal) => [deal.id, deal.title] as [string, string])),
+    [deals],
+  );
+
+  const todayItems = useMemo<{ meetings: TodayItem[]; reminders: TodayItem[] }>(
+    () => ({ meetings: [], reminders: [] }),
+    [],
+  );
+
+  return {
+    summaryQuery,
+    dealsQuery,
+    overduePaymentsQuery,
+    pastDeadlineDeals,
+    dealTitleById,
+    today: todayItems,
+  };
+}
