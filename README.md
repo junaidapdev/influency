@@ -19,6 +19,19 @@ prompts/
   claude-code-prompts.md       # one paste-in activation block per chunk (thin pointer to spec + context)
 ```
 
+## Code layout (added by chunk 00)
+The app is a **pnpm + Turborepo monorepo** (see `context/02-architecture.md`):
+```
+frontend/         # Vite + React + TS frontend (→ Vercel) — the only Node/pnpm package
+backend/          # InsForge artifacts: edge functions (Deno), SQL migrations, insforge.toml
+  shared/         # shared TS types + API envelope; frontend imports via the @shared alias
+```
+
+## Toolchain
+- Node 20+ (developed on 24), **pnpm** (via corepack: `corepack enable pnpm`).
+- Install: `pnpm install`. Build/lint/typecheck: `pnpm build` / `pnpm lint` / `pnpm typecheck` (Turborepo). Dev: `pnpm dev`.
+- Backend uses the **InsForge CLI**: `npx @insforge/cli login`, then `npx @insforge/cli link --project-id <id>`, then `npx @insforge/cli metadata` to populate `.env` (copy from `.env.example`).
+
 ## How the pieces relate
 - **`/context`** = steering files. Stable rules that rarely change. The agent reads all of them every session.
 - **`/specs`** = per-chunk plans. The agent reads only the *active* chunk's spec.

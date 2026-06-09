@@ -1,0 +1,314 @@
+{
+  "app": {
+    "name": "Influency",
+    "tagline": "Run your brand-deal business in one place."
+  },
+  "language": {
+    "label": "Language",
+    "switchTo": "العربية"
+  },
+  "auth": {
+    "title": "Welcome back",
+    "subtitle": "Sign in to your private Influency workspace.",
+    "signInTab": "Sign in",
+    "signUpTab": "Create account",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "signInAction": "Sign in",
+    "signUpAction": "Create account",
+    "googleAction": "Continue with Google",
+    "signOut": "Sign out",
+    "errors": {
+      "email": "Enter a valid email address.",
+      "password": "Password must be at least 6 characters.",
+      "name": "Enter your name.",
+      "signIn": "We could not sign you in. Check your email and password.",
+      "signUp": "We could not create the account. Try again.",
+      "google": "Google sign-in could not start. Try again.",
+      "verify": "We could not verify that code. Check the email and code."
+    }
+  },
+  "verifyEmail": {
+    "title": "Verify your email",
+    "subtitle": "Enter the 6-digit code InsForge sent to your inbox.",
+    "codeLabel": "Verification code",
+    "codeError": "Enter the 6-digit code.",
+    "action": "Verify and continue"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "This month at a glance.",
+    "greeting": "Hi,",
+    "thisMonth": "This Month",
+    "collectionRate": "Collection rate",
+    "quickAccess": "Quick access",
+    "overdue": "Overdue",
+    "today": "Today",
+    "todayEmpty": "Nothing due in the next 24 hours.",
+    "invoiced": "Invoiced this month",
+    "collected": "Collected this month",
+    "outstanding": "Outstanding",
+    "dealsPosted": "Deals posted",
+    "dealsPending": "Deals pending",
+    "needsAttention": "Needs attention",
+    "allClear": "Nothing needs attention right now.",
+    "overduePayments": "Overdue payments",
+    "pastDeadline": "Past deadline, not posted",
+    "error": "We could not load your dashboard. Refresh to try again."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "brands": "Brands",
+    "deals": "Deals",
+    "payments": "Payments",
+    "meetings": "Meetings",
+    "snap": "Snap",
+    "reports": "Reports",
+    "home": "Home",
+    "calendar": "Calendar",
+    "insights": "Insights",
+    "create": "Create"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit"
+  },
+  "brands": {
+    "title": "Brands",
+    "subtitle": "The companies and agencies you work with.",
+    "addAction": "Add brand",
+    "empty": {
+      "body": "No brands yet. Add the companies you work with to start tracking deals.",
+      "action": "Add your first brand"
+    },
+    "form": {
+      "addTitle": "Add brand",
+      "editTitle": "Edit brand"
+    },
+    "fields": {
+      "nameEn": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "contactName": "Contact name",
+      "contactEmail": "Contact email",
+      "contactPhone": "Contact phone",
+      "notes": "Notes"
+    },
+    "errors": {
+      "nameEn": "Enter the English name.",
+      "nameAr": "Enter the Arabic name.",
+      "contactEmail": "Enter a valid email address.",
+      "contactPhone": "Enter a valid phone number.",
+      "save": "We could not save this brand. Try again.",
+      "load": "We could not load your brands. Refresh to try again."
+    },
+    "detail": {
+      "back": "Back to brands",
+      "notFound": "That brand could not be found.",
+      "dealsHeading": "Deals",
+      "dealsCount": "Deals ({{count}})",
+      "noDeals": "No deals for this brand yet."
+    }
+  },
+  "deals": {
+    "title": "Deals",
+    "subtitle": "Track each brand deal from agreed to posted.",
+    "count": "{{count}} deals",
+    "addAction": "Add deal",
+    "deadline": "Deadline",
+    "noMatches": "No deals match these filters.",
+    "cancelAction": "Cancel deal",
+    "paymentPlaceholder": "Payment tracking arrives in a later chunk.",
+    "snapPlaceholder": "Linked Snap report arrives in a later chunk.",
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In progress",
+      "posted": "Posted",
+      "paid": "Paid",
+      "cancelled": "Cancelled"
+    },
+    "deliverableType": {
+      "story": "Story",
+      "post": "Post",
+      "reel": "Reel"
+    },
+    "fields": {
+      "brand": "Brand",
+      "brandPlaceholder": "Select a brand",
+      "title": "Title",
+      "deliverables": "Deliverables",
+      "count": "Count",
+      "amount": "Agreed amount (SAR)",
+      "deadline": "Deadline",
+      "notes": "Notes"
+    },
+    "filters": {
+      "brand": "Filter by brand",
+      "status": "Filter by status",
+      "month": "Filter by month",
+      "allBrands": "All brands",
+      "allStatuses": "All statuses"
+    },
+    "form": {
+      "addTitle": "Add deal",
+      "addDeliverable": "Add deliverable",
+      "removeDeliverable": "Remove deliverable"
+    },
+    "empty": {
+      "body": "No deals yet. Add your first deal to start tracking deliverables and status.",
+      "action": "Add your first deal",
+      "needBrand": "Add a brand first, then you can create deals."
+    },
+    "errors": {
+      "brand": "Select a brand.",
+      "title": "Enter a title.",
+      "deliverables": "Add at least one deliverable with a valid count.",
+      "amount": "Enter an amount greater than zero.",
+      "save": "We could not save this deal. Try again.",
+      "load": "We could not load your deals. Refresh to try again."
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "subtitle": "Track money expected and received across your deals.",
+    "addAction": "Add payment",
+    "markReceived": "Mark received",
+    "sendReminder": "Send reminder",
+    "expectedOn": "Expected",
+    "receivedOn": "Received",
+    "noPending": "No pending payments.",
+    "noReceived": "No received payments yet.",
+    "tabs": {
+      "pending": "Pending",
+      "received": "Received"
+    },
+    "status": {
+      "pending": "Pending",
+      "received": "Received",
+      "overdue": "Overdue"
+    },
+    "method": {
+      "bank": "Bank transfer",
+      "cash": "Cash",
+      "other": "Other"
+    },
+    "fields": {
+      "deal": "Deal",
+      "dealPlaceholder": "Select a deal",
+      "amount": "Amount (SAR)",
+      "expectedDate": "Expected date",
+      "method": "Method",
+      "methodNone": "Not set",
+      "notes": "Notes"
+    },
+    "form": {
+      "addTitle": "Add payment"
+    },
+    "empty": {
+      "body": "No payments yet. Add a payment to a deal to start tracking what you're owed.",
+      "action": "Add your first payment",
+      "needDeal": "Create a deal first, then you can add payments to it."
+    },
+    "errors": {
+      "deal": "Select a deal.",
+      "amount": "Enter an amount greater than zero.",
+      "save": "We could not save this payment. Try again.",
+      "load": "We could not load your payments. Refresh to try again."
+    }
+  },
+  "meetings": {
+    "title": "Meetings",
+    "subtitle": "Your calls and meetings, with reminders.",
+    "addAction": "Add meeting",
+    "cancelAction": "Cancel",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "moreCount": "+{{count}} more",
+    "views": {
+      "calendar": "Calendar",
+      "list": "List"
+    },
+    "status": {
+      "upcoming": "Upcoming",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "fields": {
+      "title": "Title",
+      "scheduledAt": "Date and time",
+      "brand": "Brand (optional)",
+      "deal": "Deal (optional)",
+      "noLink": "None",
+      "location": "Location or link",
+      "attendees": "Attendees",
+      "attendeeName": "Name",
+      "attendeeContact": "Contact (optional)",
+      "notes": "Notes"
+    },
+    "form": {
+      "addTitle": "Add meeting",
+      "editTitle": "Edit meeting",
+      "addAttendee": "Add attendee",
+      "removeAttendee": "Remove attendee"
+    },
+    "empty": {
+      "body": "No meetings yet. Schedule a call or meeting to get a reminder.",
+      "action": "Add your first meeting"
+    },
+    "errors": {
+      "title": "Enter a title.",
+      "scheduledAt": "Pick a date and time.",
+      "save": "We could not save this meeting. Try again.",
+      "load": "We could not load your meetings. Refresh to try again."
+    }
+  },
+  "snap": {
+    "title": "Snap analytics",
+    "subtitle": "Upload a Snapchat Insights screenshot and we'll read the numbers.",
+    "empty": "No reports yet. Upload a screenshot to extract its metrics.",
+    "uploadHint": "Upload a Snap Insights screenshot (image or PDF). PDFs are converted in your browser.",
+    "uploadAction": "Upload screenshot",
+    "uploading": "Uploading…",
+    "extracting": "Reading the screenshot…",
+    "failedHint": "We couldn't read this one — enter the numbers manually.",
+    "editValues": "Edit values",
+    "enterManually": "Enter manually",
+    "linkDeal": "Linked deal",
+    "noDeal": "No deal",
+    "status": {
+      "pending": "Reading…",
+      "extracted": "Extracted",
+      "failed": "Failed",
+      "manual": "Manual"
+    },
+    "fields": {
+      "views": "Views",
+      "reach": "Reach",
+      "story_views": "Story views",
+      "screenshot_count": "Screenshots",
+      "swipe_ups": "Swipe ups"
+    },
+    "errors": {
+      "type": "That file isn't a supported image. Use PNG, JPEG, WEBP, or PDF.",
+      "size": "That file is too large (max 10 MB).",
+      "upload": "We could not upload that file. Try again.",
+      "metric": "Enter whole numbers (or leave blank).",
+      "load": "We could not load your reports. Refresh to try again."
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Invoiced vs collected, and a per-brand breakdown.",
+    "monthlyTitle": "Invoiced vs collected (last 12 months)",
+    "byBrandTitle": "By brand and month",
+    "invoiced": "Invoiced",
+    "collected": "Collected",
+    "brand": "Brand",
+    "month": "Month",
+    "deals": "Deals",
+    "collectionRate": "Collection rate",
+    "empty": "No brand data yet. Add deals and payments to see this report.",
+    "error": "We could not load this report. Refresh to try again."
+  }
+}

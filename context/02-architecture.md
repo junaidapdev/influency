@@ -1,20 +1,24 @@
 # 02 — Architecture
 
 ## System design
-Single repository (**monorepo**), two top-level folders:
+Single repository (**monorepo**) managed with **pnpm workspaces + Turborepo**. Two top-level app folders — one for the frontend, one for the backend:
 
 ```
-/frontend     # Vite + React 18 + TS app (deploys to Vercel)
-/backend      # InsForge artifacts: edge functions (Deno/TS), SQL migrations, RPC, shared types
-/context      # steering files (this folder)
-/specs        # per-chunk implementation specs
-/docs         # any longer-form docs (NOT scratch *.md in repo root)
+frontend/       # Vite + React + TS app (deploys to Vercel) — the only Node/pnpm package
+backend/        # InsForge artifacts: edge functions (Deno/TS), SQL migrations, RPC, insforge.toml
+  shared/       # shared TS types + API response envelope (used by the frontend AND edge functions)
+context/        # steering files (this folder)
+specs/          # per-chunk implementation specs
+docs/           # any longer-form docs (NOT scratch *.md in repo root)
+# root: package.json, pnpm-workspace.yaml, turbo.json, tsconfig.base.json, .gitignore, .env.example
 ```
+
+> **Shared types across two runtimes.** `backend/shared` is the single source for the API envelope and shared constants (the API we own is defined on the backend side). The frontend (Node/pnpm) imports it via the `@shared` path alias; Deno edge functions import the same `.ts` files by relative path (Deno reads TypeScript directly). One definition, two consumers, no drift.
 
 ### Deliberate deviation from the review notes
 The code review asked for **separate repositories** for backend and frontend (point 5). We are using **separate folders in one repo** instead. This is an intentional, recorded decision, not an oversight:
 - On InsForge the "backend" is not a server we run — it's edge functions + SQL migrations + RPC + config. There is very little to put in its own repo.
-- A monorepo lets the frontend and edge functions share TypeScript types from one place (`/backend/shared` or a `packages/shared` workspace), which kills a whole class of drift bugs.
+- A monorepo lets the frontend and edge functions share TypeScript types from one place (the `backend/shared` folder, imported by the frontend via the `@shared` alias), which kills a whole class of drift bugs.
 - If the backend ever grows into a standalone API service, splitting then is cheap; splitting prematurely is not.
 
 ### InsForge model and its constraints (read before backend work)
