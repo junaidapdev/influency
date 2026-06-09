@@ -32,6 +32,9 @@ export function useMeetings() {
     enabled: userId !== null,
   });
 
+  // Runs on settle (success OR error). The mutations are two writes (meeting, then reminder); if
+  // the meeting succeeds but the reminder step throws, we still must refresh so the created/edited
+  // meeting shows — onSuccess would skip that and leave the UI stale.
   const invalidate = () => {
     void queryClient.invalidateQueries({ queryKey: queryKeys.meetings(userId ?? "") });
     void queryClient.invalidateQueries({ queryKey: queryKeys.reminders(userId ?? "") });
@@ -49,7 +52,7 @@ export function useMeetings() {
       );
       return meeting;
     },
-    onSuccess: invalidate,
+    onSettled: invalidate,
   });
 
   const updateMutation = useMutation({
@@ -64,7 +67,7 @@ export function useMeetings() {
       );
       return meeting;
     },
-    onSuccess: invalidate,
+    onSettled: invalidate,
   });
 
   const cancelMutation = useMutation({
@@ -73,7 +76,7 @@ export function useMeetings() {
       await clearMeetingReminder(userId ?? "", id);
       return meeting;
     },
-    onSuccess: invalidate,
+    onSettled: invalidate,
   });
 
   return { meetingsQuery, createMutation, updateMutation, cancelMutation };

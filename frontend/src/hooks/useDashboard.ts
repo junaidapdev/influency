@@ -24,8 +24,6 @@ export function useDashboard() {
   const userId = user?.id ?? null;
   const today = todayIsoDate();
   const month = today.slice(0, 7); // YYYY-MM — the summary's "current month" cache dimension.
-  const nowIso = new Date().toISOString();
-  const windowEndIso = new Date(Date.now() + TODAY_WINDOW_HOURS * 60 * 60 * 1000).toISOString();
 
   const summaryQuery = useQuery({
     queryKey: queryKeys.dashboardSummary(userId ?? "", month),
@@ -45,15 +43,24 @@ export function useDashboard() {
     enabled: userId !== null,
   });
 
+  // The 24h window is computed at FETCH time (not render) so a refetch always uses the current
+  // time; the key is bucketed by `today` so it refreshes across days.
   const todayMeetingsQuery = useQuery({
     queryKey: queryKeys.meetingsToday(userId ?? "", today),
-    queryFn: () => listTodayMeetings(userId ?? "", nowIso, windowEndIso),
+    queryFn: () => {
+      const now = new Date();
+      const windowEnd = new Date(now.getTime() + TODAY_WINDOW_HOURS * 60 * 60 * 1000);
+      return listTodayMeetings(userId ?? "", now.toISOString(), windowEnd.toISOString());
+    },
     enabled: userId !== null,
   });
 
   const todayRemindersQuery = useQuery({
     queryKey: queryKeys.remindersToday(userId ?? "", today),
-    queryFn: () => listTodayReminders(userId ?? "", windowEndIso),
+    queryFn: () => {
+      const windowEnd = new Date(Date.now() + TODAY_WINDOW_HOURS * 60 * 60 * 1000);
+      return listTodayReminders(userId ?? "", windowEnd.toISOString());
+    },
     enabled: userId !== null,
   });
 

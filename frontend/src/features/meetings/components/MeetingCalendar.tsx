@@ -28,12 +28,18 @@ export function MeetingCalendar({
   const { t, i18n } = useTranslation();
   const locale = (i18n.language as Locale) === "ar" ? "ar-SA" : "en-US";
 
-  const monthLabel = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(
-    new Date(year, monthIndex, 1),
-  );
+  // The grid is built from Gregorian Date math, so the header must be Gregorian too. ar-SA
+  // defaults to the islamic-umalqura (Hijri) calendar, which would mismatch the grid — pin gregory.
+  const monthLabel = new Intl.DateTimeFormat(locale, {
+    calendar: "gregory",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(year, monthIndex, 1));
 
   const weekdayNames = SUNDAY_REFERENCE.map((offset) =>
-    new Intl.DateTimeFormat(locale, { weekday: "short" }).format(new Date(2024, 0, 7 + offset)),
+    new Intl.DateTimeFormat(locale, { calendar: "gregory", weekday: "short" }).format(
+      new Date(2024, 0, 7 + offset),
+    ),
   );
 
   const meetingsByDay = useMemo(() => {
