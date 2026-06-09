@@ -87,6 +87,7 @@
     "detail": {
       "back": "Back to brands",
       "notFound": "That brand could not be found.",
+      "dealsHeading": "Deals",
       "dealsCount": "Deals ({{count}})",
       "noDeals": "No deals for this brand yet."
     }

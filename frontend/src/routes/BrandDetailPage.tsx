@@ -61,9 +61,18 @@ export function BrandDetailPage() {
       </div>
 
       <div className="space-y-3">
-        <h2 className="font-semibold">{t("brands.detail.dealsCount", { count: deals.length })}</h2>
+        <h2 className="font-semibold">
+          {dealsQuery.isPending
+            ? t("brands.detail.dealsHeading")
+            : t("brands.detail.dealsCount", { count: deals.length })}
+        </h2>
 
-        {dealsQuery.isError ? (
+        {dealsQuery.isPending ? (
+          <div className="space-y-3" aria-busy="true">
+            <div className="h-16 rounded-md bg-muted" />
+            <div className="h-16 rounded-md bg-muted" />
+          </div>
+        ) : dealsQuery.isError ? (
           <p className="text-sm text-red-600">{t("deals.errors.load")}</p>
         ) : deals.length === 0 ? (
           <p className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
