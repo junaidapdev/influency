@@ -22,4 +22,5 @@ export const queryKeys = {
   reminders: (userId: string) => ["reminders", userId] as const,
   remindersToday: (userId: string, today: string) =>
     ["reminders", userId, "today", today] as const,
+  snapReports: (userId: string) => ["snap-reports", userId] as const,
 } as const;

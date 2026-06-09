@@ -7,6 +7,7 @@ import { DashboardPage } from "@/routes/DashboardPage";
 import { DealsPage } from "@/routes/DealsPage";
 import { PaymentsPage } from "@/routes/PaymentsPage";
 import { MeetingsPage } from "@/routes/MeetingsPage";
+import { SnapPage } from "@/routes/SnapPage";
 import { RootLayout } from "@/routes/RootLayout";
 import { LoginPage } from "@/routes/LoginPage";
 import { VerifyEmailPage } from "@/routes/VerifyEmailPage";
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
           { path: ROUTES.deals, element: <DealsPage /> },
           { path: ROUTES.payments, element: <PaymentsPage /> },
           { path: ROUTES.meetings, element: <MeetingsPage /> },
+          { path: ROUTES.snap, element: <SnapPage /> },
         ],
       },
     ],
