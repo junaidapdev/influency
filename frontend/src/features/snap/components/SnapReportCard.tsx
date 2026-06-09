@@ -47,6 +47,7 @@ export function SnapReportCard({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<SnapManualValues>({
     resolver: zodResolver(snapManualSchema),
@@ -56,6 +57,14 @@ export function SnapReportCard({
   const isPending = report.extraction_status === EXTRACTION_STATUS.PENDING;
   const isFailed = report.extraction_status === EXTRACTION_STATUS.FAILED;
   const shownDate = report.report_date ?? report.created_at;
+
+  // Seed the form from the LATEST report each time the editor opens — so a realtime/refetch update
+  // can't leave stale values that would overwrite newer extracted metrics, and a prior cancel's
+  // unsaved input is discarded.
+  function openEditor() {
+    reset(toFormValues(report));
+    setEditing(true);
+  }
 
   async function submit(values: SnapManualValues) {
     await onSaveManual(report.id, values);
@@ -117,7 +126,7 @@ export function SnapReportCard({
               );
             })}
           </dl>
-          <Button type="button" variant="outline" size="sm" onClick={() => setEditing(true)}>
+          <Button type="button" variant="outline" size="sm" onClick={openEditor}>
             {isFailed ? t("snap.enterManually") : t("snap.editValues")}
           </Button>
         </>

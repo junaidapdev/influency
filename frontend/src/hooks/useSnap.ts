@@ -1,8 +1,5 @@
-import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
-import { SNAP_REALTIME } from "@/constants/snap";
-import { insforge } from "@/lib/insforge";
 import { useAuth } from "@/features/auth/auth.context";
 import {
   createSnapReport,
@@ -17,8 +14,12 @@ import { pdfFirstPageToPng } from "@/features/snap/pdf";
 import { type SnapManualValues } from "@/features/snap/snap.types";
 
 /**
- * Snap reports: list + upload→extract pipeline + manual override + deal link, plus a realtime
- * subscription to the user's channel so a row flips from pending → extracted/failed without polling.
+ * Snap reports: list + upload→extract pipeline + manual override + deal link.
+ *
+ * The extract edge function is synchronous (invoke resolves AFTER it writes the result), so the
+ * UI updates from the awaited mutation, not a realtime subscription — that avoids a cross-tenant
+ * subscription surface we can't RLS-gate (realtime.channels is owned by `postgres`). We invalidate
+ * once mid-pipeline (so the pending row appears) and again on settle (so it flips to the result).
  * Validation failures throw INVALID_TYPE / INVALID_SIZE for the page to localize.
  */
 export function useSnap() {
@@ -35,33 +36,6 @@ export function useSnap() {
   const invalidate = () =>
     queryClient.invalidateQueries({ queryKey: queryKeys.snapReports(userId ?? "") });
 
-  // Realtime: subscribe to snap:<userId>; the edge function's UPDATE fires a publish trigger.
-  useEffect(() => {
-    if (userId === null) {
-      return;
-    }
-    const channel = `${SNAP_REALTIME.CHANNEL_PREFIX}:${userId}`;
-    const handler = () => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.snapReports(userId) });
-    };
-    let cancelled = false;
-
-    void (async () => {
-      await insforge.realtime.connect();
-      if (cancelled) {
-        return;
-      }
-      await insforge.realtime.subscribe(channel);
-      insforge.realtime.on(SNAP_REALTIME.EVENT, handler);
-    })();
-
-    return () => {
-      cancelled = true;
-      insforge.realtime.off(SNAP_REALTIME.EVENT, handler);
-      void insforge.realtime.unsubscribe(channel);
-    };
-  }, [userId, queryClient]);
-
   const uploadAndExtractMutation = useMutation({
     mutationFn: async ({ file, dealId }: { file: File; dealId: string | null }) => {
       const image = (await isPdf(file)) ? await pdfFirstPageToPng(file) : file;
@@ -71,6 +45,7 @@ export function useSnap() {
       }
       const { key, url } = await uploadSnapImage(userId ?? "", image);
       const report = await createSnapReport(userId ?? "", { dealId, sourceFileUrl: url });
+      void invalidate(); // show the pending row while extraction runs
       await invokeExtract(key, report.id);
       return report;
     },

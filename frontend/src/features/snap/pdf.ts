@@ -14,9 +14,9 @@ export async function pdfFirstPageToPng(file: Blob): Promise<Blob> {
 
   const data = await file.arrayBuffer();
   const loadingTask = getDocument({ data });
-  const pdf = await loadingTask.promise;
 
   try {
+    const pdf = await loadingTask.promise;
     const page = await pdf.getPage(1);
     const viewport = page.getViewport({ scale: RENDER_SCALE });
     const canvas = document.createElement("canvas");

@@ -25,7 +25,9 @@ const HTTP = {
   OK: 200,
   BAD_REQUEST: 400,
   UNAUTHENTICATED: 401,
+  NOT_FOUND: 404,
   METHOD_NOT_ALLOWED: 405,
+  CONFLICT: 409,
   RATE_LIMITED: 429,
   SERVER_ERROR: 500,
 } as const;
@@ -140,6 +142,25 @@ export default async function (req: Request): Promise<Response> {
     return json(fail("VALIDATION_FAILED", "file_key and snap_report_id are required."), HTTP.BAD_REQUEST);
   }
   const { file_key, snap_report_id } = parsedInput.data;
+
+  // Each report is extractable ONCE. The rate limit counts created reports, so without this a
+  // client could re-invoke on the SAME report id to repeat the paid OpenAI call for free. Require
+  // the report to be the caller's and still 'pending' before doing any paid work.
+  const { data: existing, error: fetchError } = await client.database
+    .from(SNAP_REPORTS_TABLE)
+    .select("extraction_status")
+    .eq("id", snap_report_id)
+    .eq("user_id", uid)
+    .maybeSingle();
+  if (fetchError) {
+    return json(fail("SERVER_ERROR", "Could not load the report."), HTTP.SERVER_ERROR);
+  }
+  if (!existing) {
+    return json(fail("NOT_FOUND", "Report not found."), HTTP.NOT_FOUND);
+  }
+  if (existing.extraction_status !== "pending") {
+    return json(fail("ALREADY_PROCESSED", "This report was already processed."), HTTP.CONFLICT);
+  }
 
   const markFailed = async () => {
     await client.database

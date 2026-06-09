@@ -30,11 +30,6 @@ export const SNAP_FILE = {
 export const SNAP_ALLOWED_IMAGE_MIME = ["image/png", "image/jpeg", "image/webp"] as const;
 export type SnapImageMime = (typeof SNAP_ALLOWED_IMAGE_MIME)[number];
 
-export const SNAP_REALTIME = {
-  CHANNEL_PREFIX: "snap", // channel is `snap:${userId}`
-  EVENT: "snap_updated",
-} as const;
-
 // The numeric metric fields the model extracts and the user can override.
 export const SNAP_METRIC_FIELDS = [
   "views",
