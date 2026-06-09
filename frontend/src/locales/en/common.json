@@ -58,7 +58,8 @@
     "deals": "Deals",
     "payments": "Payments",
     "meetings": "Meetings",
-    "snap": "Snap"
+    "snap": "Snap",
+    "reports": "Reports"
   },
   "common": {
     "save": "Save",
@@ -285,5 +286,19 @@
       "metric": "Enter whole numbers (or leave blank).",
       "load": "We could not load your reports. Refresh to try again."
     }
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "Invoiced vs collected, and a per-brand breakdown.",
+    "monthlyTitle": "Invoiced vs collected (last 12 months)",
+    "byBrandTitle": "By brand and month",
+    "invoiced": "Invoiced",
+    "collected": "Collected",
+    "brand": "Brand",
+    "month": "Month",
+    "deals": "Deals",
+    "collectionRate": "Collection rate",
+    "empty": "No brand data yet. Add deals and payments to see this report.",
+    "error": "We could not load this report. Refresh to try again."
   }
 }
