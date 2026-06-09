@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ArrowLeft } from "lucide-react";
 import { BrandAvatar } from "@/components/BrandAvatar";
 import { type Locale } from "@/constants/i18n";
 import { ROUTES } from "@/constants/routes";
@@ -44,8 +45,13 @@ export function BrandDetailPage() {
 
   return (
     <section className="space-y-5">
-      <Link className="text-sm font-semibold text-primary" to={ROUTES.brands}>
-        ← {t("brands.detail.back")}
+      <Link
+        className="inline-flex items-center gap-1 text-sm font-semibold text-primary"
+        to={ROUTES.brands}
+      >
+        {/* Icon flips with direction so it points "back" correctly in both LTR and RTL. */}
+        <ArrowLeft className="size-4 rtl:rotate-180" />
+        {t("brands.detail.back")}
       </Link>
       <div className="flex items-start gap-3">
         <BrandAvatar name={primaryName} seed={brand.id} className="size-12" />
@@ -77,7 +83,7 @@ export function BrandDetailPage() {
             <div className="h-16 rounded-md bg-muted" />
           </div>
         ) : dealsQuery.isError ? (
-          <p className="text-sm text-red-600">{t("deals.errors.load")}</p>
+          <p className="text-sm text-danger">{t("deals.errors.load")}</p>
         ) : deals.length === 0 ? (
           <p className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
             {t("brands.detail.noDeals")}

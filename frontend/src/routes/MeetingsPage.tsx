@@ -78,7 +78,7 @@ export function MeetingsPage() {
           <div className="h-24 rounded-md bg-muted" />
         </div>
       ) : meetingsQuery.isError ? (
-        <p className="text-sm text-red-600">{t("meetings.errors.load")}</p>
+        <p className="text-sm text-danger">{t("meetings.errors.load")}</p>
       ) : meetings.length === 0 ? (
         <MeetingsEmptyState onAdd={() => setDialog({ open: true, meeting: null })} />
       ) : view === MEETING_VIEW.CALENDAR ? (

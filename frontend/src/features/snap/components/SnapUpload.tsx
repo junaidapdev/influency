@@ -67,7 +67,7 @@ export function SnapUpload({ deals, isUploading, errorCode, onUpload }: SnapUplo
         </select>
       </label>
 
-      {errorCode && <p className="text-sm text-red-600">{t(`snap.errors.${errorCode}`)}</p>}
+      {errorCode && <p className="text-sm text-danger">{t(`snap.errors.${errorCode}`)}</p>}
     </div>
   );
 }

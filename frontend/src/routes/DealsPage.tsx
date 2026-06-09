@@ -114,7 +114,7 @@ export function DealsPage() {
           <div className="h-24 rounded-2xl bg-muted" />
         </div>
       ) : dealsQuery.isError ? (
-        <p className="rounded-2xl bg-card p-4 text-sm text-red-600 shadow-card">
+        <p className="rounded-2xl bg-card p-4 text-sm text-danger shadow-card">
           {t("deals.errors.load")}
         </p>
       ) : deals.length === 0 ? (

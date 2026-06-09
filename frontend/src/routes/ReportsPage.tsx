@@ -19,7 +19,7 @@ export function ReportsPage() {
         {monthlyQuery.isPending ? (
           <div className="h-72 rounded-md bg-muted" aria-busy="true" />
         ) : monthlyQuery.isError ? (
-          <p className="text-sm text-red-600">{t("reports.error")}</p>
+          <p className="text-sm text-danger">{t("reports.error")}</p>
         ) : (
           <MonthlyChart rows={monthly} />
         )}
@@ -30,7 +30,7 @@ export function ReportsPage() {
         {byBrandQuery.isPending ? (
           <div className="h-32 rounded-md bg-muted" aria-busy="true" />
         ) : byBrandQuery.isError ? (
-          <p className="text-sm text-red-600">{t("reports.error")}</p>
+          <p className="text-sm text-danger">{t("reports.error")}</p>
         ) : byBrand.length === 0 ? (
           <p className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
             {t("reports.empty")}

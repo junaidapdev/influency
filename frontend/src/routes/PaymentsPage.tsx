@@ -95,7 +95,7 @@ export function PaymentsPage() {
           <div className="h-20 rounded-md bg-muted" />
         </div>
       ) : paymentsQuery.isError ? (
-        <p className="text-sm text-red-600">{t("payments.errors.load")}</p>
+        <p className="text-sm text-danger">{t("payments.errors.load")}</p>
       ) : payments.length === 0 ? (
         <PaymentsEmptyState canAdd={canAdd} onAdd={() => setDialogOpen(true)} />
       ) : visible.length === 0 ? (

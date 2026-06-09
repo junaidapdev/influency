@@ -76,7 +76,7 @@ export function VerifyEmailPage() {
           )}
         </label>
 
-        {formError && <p className="text-sm text-red-600">{formError}</p>}
+        {formError && <p className="text-sm text-danger">{formError}</p>}
 
         <Button className="w-full" disabled={form.formState.isSubmitting}>
           {t("verifyEmail.action")}

@@ -47,7 +47,7 @@ export function SnapPage() {
           <div className="h-28 rounded-md bg-muted" />
         </div>
       ) : snapReportsQuery.isError ? (
-        <p className="text-sm text-red-600">{t("snap.errors.load")}</p>
+        <p className="text-sm text-danger">{t("snap.errors.load")}</p>
       ) : reports.length === 0 ? (
         <p className="rounded-md border border-dashed p-8 text-center text-sm text-muted-foreground">
           {t("snap.empty")}

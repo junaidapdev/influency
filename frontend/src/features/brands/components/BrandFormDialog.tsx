@@ -44,7 +44,7 @@ function Field({
     <label className="block space-y-1.5">
       <span className="text-sm font-medium">{label}</span>
       {children}
-      {error && <span className="block text-sm text-red-600">{error}</span>}
+      {error && <span className="block text-sm text-danger">{error}</span>}
     </label>
   );
 }
@@ -155,7 +155,7 @@ export function BrandFormDialog({ brand, onClose, onSubmit }: BrandFormDialogPro
             />
           </Field>
 
-          {submitFailed && <p className="text-sm text-red-600">{t("brands.errors.save")}</p>}
+          {submitFailed && <p className="text-sm text-danger">{t("brands.errors.save")}</p>}
 
           <div className="flex justify-end gap-3">
             <Button type="button" variant="ghost" onClick={onClose}>

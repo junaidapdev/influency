@@ -6,12 +6,44 @@ import { formatMonthLabel, todayIsoDate } from "@/lib/date";
 const RADIUS = 30;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-/** The "This Month" gradient hero: invoiced total + a collection-rate ring. */
-export function HeroCard({ invoiced, collected }: { invoiced: number; collected: number }) {
+const SPARK_WIDTH = 300;
+const SPARK_HEIGHT = 40;
+const SPARK_PAD = 4;
+
+/** Polyline points for a sparkline, normalized from real values to the viewBox. */
+function sparklinePoints(values: number[]): string {
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const range = max - min || 1;
+  const step = SPARK_WIDTH / (values.length - 1);
+  return values
+    .map((value, index) => {
+      const x = index * step;
+      const y =
+        SPARK_HEIGHT - SPARK_PAD - ((value - min) / range) * (SPARK_HEIGHT - SPARK_PAD * 2);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+}
+
+/**
+ * The "This Month" gradient hero: invoiced total + a collection-rate ring, with an optional
+ * sparkline drawn from a REAL monthly-invoiced trend (omitted when there isn't enough data).
+ */
+export function HeroCard({
+  invoiced,
+  collected,
+  trend = [],
+}: {
+  invoiced: number;
+  collected: number;
+  trend?: number[];
+}) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language as Locale;
   const ratio = invoiced > 0 ? Math.min(collected / invoiced, 1) : 0;
   const monthLabel = formatMonthLabel(todayIsoDate().slice(0, 7), locale);
+  const showTrend = trend.length >= 2 && trend.some((value) => value > 0);
 
   return (
     <div className="bg-brand-gradient relative overflow-hidden rounded-3xl p-5 text-white shadow-card">
@@ -50,19 +82,23 @@ export function HeroCard({ invoiced, collected }: { invoiced: number; collected:
         </div>
       </div>
 
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 300 40"
-        preserveAspectRatio="none"
-        className="mt-3 h-8 w-full text-white/40"
-      >
-        <polyline
-          points="0,30 43,22 86,26 129,12 172,18 215,9 258,16 300,7"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-      </svg>
+      {showTrend && (
+        <svg
+          aria-hidden="true"
+          viewBox={`0 0 ${SPARK_WIDTH} ${SPARK_HEIGHT}`}
+          preserveAspectRatio="none"
+          className="mt-3 h-8 w-full text-white/50"
+        >
+          <polyline
+            points={sparklinePoints(trend)}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
     </div>
   );
 }

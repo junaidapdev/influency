@@ -8,6 +8,7 @@ import { ROUTES } from "@/constants/routes";
 import { formatTime } from "@/lib/date";
 import { useAuth } from "@/features/auth/auth.context";
 import { useDashboard } from "@/hooks/useDashboard";
+import { useReports } from "@/hooks/useReports";
 import { HeroCard } from "@/features/dashboard/components/HeroCard";
 import { NeedsAttentionPanel } from "@/features/dashboard/components/NeedsAttentionPanel";
 import { QuickAccess } from "@/features/dashboard/components/QuickAccess";
@@ -21,25 +22,36 @@ export function DashboardPage() {
   const { user, appUser, signOut } = useAuth();
   const { summaryQuery, overduePaymentsQuery, pastDeadlineDeals, dealTitleById, today } =
     useDashboard();
+  const { monthlyQuery } = useReports();
 
   const name = appUser?.display_name ?? "";
   const summary = summaryQuery.data;
+  const trend = (monthlyQuery.data ?? []).map((row) => row.invoiced);
 
+  // Merge meetings + reminders into one timeline, ordered by their actual time (not type).
   const todayItems: TodayItem[] = [
     ...today.meetings.map((meeting) => ({
-      id: meeting.id,
-      title: meeting.title,
-      subtitle: meeting.location_or_link ?? undefined,
-      at: formatTime(meeting.scheduled_at, locale),
-      accent: "progress" as const,
+      item: {
+        id: meeting.id,
+        title: meeting.title,
+        subtitle: meeting.location_or_link ?? undefined,
+        at: formatTime(meeting.scheduled_at, locale),
+        accent: "progress" as const,
+      },
+      ts: meeting.scheduled_at,
     })),
     ...today.reminders.map((reminder) => ({
-      id: reminder.id,
-      title: locale === "ar" ? reminder.message_ar : reminder.message_en,
-      at: formatTime(reminder.due_at, locale),
-      accent: "pending" as const,
+      item: {
+        id: reminder.id,
+        title: locale === "ar" ? reminder.message_ar : reminder.message_en,
+        at: formatTime(reminder.due_at, locale),
+        accent: "pending" as const,
+      },
+      ts: reminder.due_at,
     })),
-  ];
+  ]
+    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime())
+    .map((entry) => entry.item);
 
   return (
     <div className="space-y-5">
@@ -62,12 +74,12 @@ export function DashboardPage() {
       {summaryQuery.isPending ? (
         <div className="h-44 rounded-3xl bg-muted" aria-busy="true" />
       ) : summaryQuery.isError ? (
-        <p className="rounded-2xl bg-card p-4 text-sm text-red-600 shadow-card">
+        <p className="rounded-2xl bg-card p-4 text-sm text-danger shadow-card">
           {t("dashboard.error")}
         </p>
       ) : summary ? (
         <>
-          <HeroCard invoiced={summary.invoiced} collected={summary.collected} />
+          <HeroCard invoiced={summary.invoiced} collected={summary.collected} trend={trend} />
           <SummaryCards summary={summary} />
         </>
       ) : null}

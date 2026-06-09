@@ -28,7 +28,7 @@ function Field({ label, error, children }: { label: string; error?: string; chil
     <label className="block space-y-1.5">
       <span className="text-sm font-medium">{label}</span>
       {children}
-      {error && <span className="block text-sm text-red-600">{error}</span>}
+      {error && <span className="block text-sm text-danger">{error}</span>}
     </label>
   );
 }
@@ -145,7 +145,7 @@ export function DealFormDialog({ brands, onClose, onSubmit }: DealFormDialogProp
               </div>
             ))}
             {errors.deliverables && (
-              <span className="block text-sm text-red-600">{t("deals.errors.deliverables")}</span>
+              <span className="block text-sm text-danger">{t("deals.errors.deliverables")}</span>
             )}
             <Button
               type="button"
@@ -183,7 +183,7 @@ export function DealFormDialog({ brands, onClose, onSubmit }: DealFormDialogProp
             />
           </Field>
 
-          {submitFailed && <p className="text-sm text-red-600">{t("deals.errors.save")}</p>}
+          {submitFailed && <p className="text-sm text-danger">{t("deals.errors.save")}</p>}
 
           <div className="flex justify-end gap-3">
             <Button type="button" variant="ghost" onClick={onClose}>

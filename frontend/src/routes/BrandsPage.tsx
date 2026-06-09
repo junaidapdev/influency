@@ -57,7 +57,7 @@ export function BrandsPage() {
           <div className="h-20 rounded-md bg-muted" />
         </div>
       ) : brandsQuery.isError ? (
-        <p className="text-sm text-red-600">{t("brands.errors.load")}</p>
+        <p className="text-sm text-danger">{t("brands.errors.load")}</p>
       ) : brands.length === 0 ? (
         <BrandsEmptyState onAdd={openAdd} />
       ) : (
