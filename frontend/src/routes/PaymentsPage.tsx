@@ -5,12 +5,11 @@ import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
 import { PAYMENT_STATUS, PAYMENT_TAB, type PaymentTab } from "@/constants/payments";
 import { useDeals } from "@/hooks/useDeals";
 import { usePayments } from "@/hooks/usePayments";
+import { todayIsoDate } from "@/lib/date";
 import { AddPaymentDialog } from "@/features/payments/components/AddPaymentDialog";
 import { PaymentRow } from "@/features/payments/components/PaymentRow";
 import { PaymentsEmptyState } from "@/features/payments/components/PaymentsEmptyState";
 import { type Payment, type PaymentFormValues } from "@/features/payments/payment.types";
-
-const TODAY = () => new Date().toISOString().slice(0, 10);
 
 function byExpectedAsc(a: Payment, b: Payment): number {
   const da = a.expected_date ?? "9999-12-31";
@@ -52,7 +51,7 @@ export function PaymentsPage() {
   }
 
   function handleMarkReceived(paymentId: string) {
-    markReceivedMutation.mutate({ paymentId, receivedDate: TODAY() });
+    markReceivedMutation.mutate({ paymentId, receivedDate: todayIsoDate() });
   }
 
   function tabClass(value: PaymentTab): string {
