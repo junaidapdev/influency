@@ -12,6 +12,7 @@ export default tseslint.config(
       "**/build/**",
       "**/node_modules/**",
       "**/.turbo/**",
+      "**/.vite/**",
       "backend/**",
     ],
   },
