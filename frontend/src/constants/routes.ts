@@ -5,6 +5,13 @@ export const ROUTES = {
   verifyEmail: "/verify-email",
   dashboard: "/dashboard",
   brands: "/brands",
+  brandDetail: "/brands/:brandId",
+  deals: "/deals",
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
+
+/** Build a concrete brand-detail path from a brand id. */
+export function brandDetailPath(brandId: string): string {
+  return `/brands/${brandId}`;
+}

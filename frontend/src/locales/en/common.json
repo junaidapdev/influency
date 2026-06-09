@@ -48,7 +48,8 @@
   },
   "nav": {
     "dashboard": "Dashboard",
-    "brands": "Brands"
+    "brands": "Brands",
+    "deals": "Deals"
   },
   "common": {
     "save": "Save",
@@ -82,6 +83,70 @@
       "contactPhone": "Enter a valid phone number.",
       "save": "We could not save this brand. Try again.",
       "load": "We could not load your brands. Refresh to try again."
+    },
+    "detail": {
+      "back": "Back to brands",
+      "notFound": "That brand could not be found.",
+      "dealsHeading": "Deals",
+      "dealsCount": "Deals ({{count}})",
+      "noDeals": "No deals for this brand yet."
+    }
+  },
+  "deals": {
+    "title": "Deals",
+    "subtitle": "Track each brand deal from agreed to posted.",
+    "addAction": "Add deal",
+    "deadline": "Deadline",
+    "noMatches": "No deals match these filters.",
+    "cancelAction": "Cancel deal",
+    "paymentPlaceholder": "Payment tracking arrives in a later chunk.",
+    "snapPlaceholder": "Linked Snap report arrives in a later chunk.",
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In progress",
+      "posted": "Posted",
+      "paid": "Paid",
+      "cancelled": "Cancelled"
+    },
+    "deliverableType": {
+      "story": "Story",
+      "post": "Post",
+      "reel": "Reel"
+    },
+    "fields": {
+      "brand": "Brand",
+      "brandPlaceholder": "Select a brand",
+      "title": "Title",
+      "deliverables": "Deliverables",
+      "count": "Count",
+      "amount": "Agreed amount (SAR)",
+      "deadline": "Deadline",
+      "notes": "Notes"
+    },
+    "filters": {
+      "brand": "Filter by brand",
+      "status": "Filter by status",
+      "month": "Filter by month",
+      "allBrands": "All brands",
+      "allStatuses": "All statuses"
+    },
+    "form": {
+      "addTitle": "Add deal",
+      "addDeliverable": "Add deliverable",
+      "removeDeliverable": "Remove deliverable"
+    },
+    "empty": {
+      "body": "No deals yet. Add your first deal to start tracking deliverables and status.",
+      "action": "Add your first deal",
+      "needBrand": "Add a brand first, then you can create deals."
+    },
+    "errors": {
+      "brand": "Select a brand.",
+      "title": "Enter a title.",
+      "deliverables": "Add at least one deliverable with a valid count.",
+      "amount": "Enter an amount greater than zero.",
+      "save": "We could not save this deal. Try again.",
+      "load": "We could not load your deals. Refresh to try again."
     }
   }
 }
