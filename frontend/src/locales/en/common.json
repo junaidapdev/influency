@@ -45,5 +45,43 @@
     "emptyTitle": "No business data yet",
     "emptyBody": "Brands, deals, payments, meetings, and Snap analytics will fill this dashboard as the next chunks land.",
     "profileReady": "Profile ready. Reminder lead time: {{minutes}} minutes."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "brands": "Brands"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit"
+  },
+  "brands": {
+    "title": "Brands",
+    "subtitle": "The companies and agencies you work with.",
+    "addAction": "Add brand",
+    "empty": {
+      "body": "No brands yet. Add the companies you work with to start tracking deals.",
+      "action": "Add your first brand"
+    },
+    "form": {
+      "addTitle": "Add brand",
+      "editTitle": "Edit brand"
+    },
+    "fields": {
+      "nameEn": "Name (English)",
+      "nameAr": "Name (Arabic)",
+      "contactName": "Contact name",
+      "contactEmail": "Contact email",
+      "contactPhone": "Contact phone",
+      "notes": "Notes"
+    },
+    "errors": {
+      "nameEn": "Enter the English name.",
+      "nameAr": "Enter the Arabic name.",
+      "contactEmail": "Enter a valid email address.",
+      "contactPhone": "Enter a valid phone number.",
+      "save": "We could not save this brand. Try again.",
+      "load": "We could not load your brands. Refresh to try again."
+    }
   }
 }
