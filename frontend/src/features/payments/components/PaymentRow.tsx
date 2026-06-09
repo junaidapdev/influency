@@ -11,10 +11,17 @@ interface PaymentRowProps {
   payment: Payment;
   dealTitle: string;
   onMarkReceived: (paymentId: string) => void;
-  isMarking: boolean;
+  onSendReminder: (payment: Payment) => void;
+  isBusy: boolean;
 }
 
-export function PaymentRow({ payment, dealTitle, onMarkReceived, isMarking }: PaymentRowProps) {
+export function PaymentRow({
+  payment,
+  dealTitle,
+  onMarkReceived,
+  onSendReminder,
+  isBusy,
+}: PaymentRowProps) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language as Locale;
   const isReceived = payment.status === PAYMENT_STATUS.RECEIVED;
@@ -40,15 +47,26 @@ export function PaymentRow({ payment, dealTitle, onMarkReceived, isMarking }: Pa
           {formatSar(payment.amount_sar, locale)}
         </span>
         {!isReceived && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={isMarking}
-            onClick={() => onMarkReceived(payment.id)}
-          >
-            {t("payments.markReceived")}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={isBusy}
+              onClick={() => onMarkReceived(payment.id)}
+            >
+              {t("payments.markReceived")}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={isBusy}
+              onClick={() => onSendReminder(payment)}
+            >
+              {t("payments.sendReminder")}
+            </Button>
+          </div>
         )}
       </div>
     </li>

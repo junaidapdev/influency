@@ -56,7 +56,8 @@
     "dashboard": "Dashboard",
     "brands": "Brands",
     "deals": "Deals",
-    "payments": "Payments"
+    "payments": "Payments",
+    "meetings": "Meetings"
   },
   "common": {
     "save": "Save",
@@ -161,6 +162,7 @@
     "subtitle": "Track money expected and received across your deals.",
     "addAction": "Add payment",
     "markReceived": "Mark received",
+    "sendReminder": "Send reminder",
     "expectedOn": "Expected",
     "receivedOn": "Received",
     "noPending": "No pending payments.",
@@ -201,6 +203,52 @@
       "amount": "Enter an amount greater than zero.",
       "save": "We could not save this payment. Try again.",
       "load": "We could not load your payments. Refresh to try again."
+    }
+  },
+  "meetings": {
+    "title": "Meetings",
+    "subtitle": "Your calls and meetings, with reminders.",
+    "addAction": "Add meeting",
+    "cancelAction": "Cancel",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "moreCount": "+{{count}} more",
+    "views": {
+      "calendar": "Calendar",
+      "list": "List"
+    },
+    "status": {
+      "upcoming": "Upcoming",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "fields": {
+      "title": "Title",
+      "scheduledAt": "Date and time",
+      "brand": "Brand (optional)",
+      "deal": "Deal (optional)",
+      "noLink": "None",
+      "location": "Location or link",
+      "attendees": "Attendees",
+      "attendeeName": "Name",
+      "attendeeContact": "Contact (optional)",
+      "notes": "Notes"
+    },
+    "form": {
+      "addTitle": "Add meeting",
+      "editTitle": "Edit meeting",
+      "addAttendee": "Add attendee",
+      "removeAttendee": "Remove attendee"
+    },
+    "empty": {
+      "body": "No meetings yet. Schedule a call or meeting to get a reminder.",
+      "action": "Add your first meeting"
+    },
+    "errors": {
+      "title": "Enter a title.",
+      "scheduledAt": "Pick a date and time.",
+      "save": "We could not save this meeting. Try again.",
+      "load": "We could not load your meetings. Refresh to try again."
     }
   }
 }

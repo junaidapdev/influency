@@ -1,18 +1,33 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { type Locale } from "@/constants/i18n";
+import { formatTime } from "@/lib/date";
 import { useAuth } from "@/features/auth/auth.context";
 import { useDashboard } from "@/hooks/useDashboard";
 import { NeedsAttentionPanel } from "@/features/dashboard/components/NeedsAttentionPanel";
 import { SummaryCards } from "@/features/dashboard/components/SummaryCards";
 import { TodayPanel } from "@/features/dashboard/components/TodayPanel";
+import { type TodayItem } from "@/features/dashboard/dashboard.types";
 
 const SKELETON_KEYS = ["a", "b", "c", "d", "e"];
 
 export function DashboardPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language as Locale;
   const { signOut } = useAuth();
   const { summaryQuery, overduePaymentsQuery, pastDeadlineDeals, dealTitleById, today } =
     useDashboard();
+
+  const todayMeetingItems: TodayItem[] = today.meetings.map((meeting) => ({
+    id: meeting.id,
+    title: meeting.title,
+    at: formatTime(meeting.scheduled_at, locale),
+  }));
+  const todayReminderItems: TodayItem[] = today.reminders.map((reminder) => ({
+    id: reminder.id,
+    title: locale === "ar" ? reminder.message_ar : reminder.message_en,
+    at: formatTime(reminder.due_at, locale),
+  }));
 
   return (
     <section className="space-y-6">
@@ -44,7 +59,7 @@ export function DashboardPage() {
           pastDeadlineDeals={pastDeadlineDeals}
           dealTitleById={dealTitleById}
         />
-        <TodayPanel meetings={today.meetings} reminders={today.reminders} />
+        <TodayPanel meetings={todayMeetingItems} reminders={todayReminderItems} />
       </div>
     </section>
   );
