@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { TriangleAlert } from "lucide-react";
 import { type Locale } from "@/constants/i18n";
 import { formatSar } from "@/lib/currency";
 import { formatDualCalendarDate } from "@/lib/date";
@@ -18,59 +19,52 @@ export function NeedsAttentionPanel({
 }: NeedsAttentionPanelProps) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language as Locale;
-  const isEmpty = overduePayments.length === 0 && pastDeadlineDeals.length === 0;
+
+  if (overduePayments.length === 0 && pastDeadlineDeals.length === 0) {
+    return (
+      <p className="rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-card">
+        {t("dashboard.allClear")}
+      </p>
+    );
+  }
 
   return (
-    <section className="space-y-4 rounded-md border p-4">
-      <h2 className="font-semibold">{t("dashboard.needsAttention")}</h2>
+    <ul className="space-y-2">
+      {overduePayments.map((payment) => (
+        <li key={payment.id} className="flex items-center gap-3 rounded-2xl bg-card p-3 shadow-card">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-danger-soft text-danger">
+            <TriangleAlert className="size-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold">
+              {t("dashboard.overdue")} · {dealTitleById.get(payment.deal_id) ?? ""}
+            </p>
+            {payment.expected_date && (
+              <p className="truncate text-xs text-muted-foreground">
+                {t("payments.expectedOn")} {formatDualCalendarDate(payment.expected_date, locale).primary}
+              </p>
+            )}
+          </div>
+          <span className="shrink-0 text-sm font-bold tabular-nums text-danger">
+            {formatSar(payment.amount_sar, locale)}
+          </span>
+        </li>
+      ))}
 
-      {isEmpty ? (
-        <p className="text-sm text-muted-foreground">{t("dashboard.allClear")}</p>
-      ) : (
-        <div className="space-y-4">
-          {overduePayments.length > 0 && (
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">{t("dashboard.overduePayments")}</h3>
-              <ul className="space-y-2">
-                {overduePayments.map((payment) => (
-                  <li key={payment.id} className="flex items-center justify-between gap-3 text-sm">
-                    <span className="min-w-0">
-                      {dealTitleById.get(payment.deal_id) ?? ""}
-                      {payment.expected_date && (
-                        <span className="text-muted-foreground">
-                          {" · "}
-                          {formatDualCalendarDate(payment.expected_date, locale).primary}
-                        </span>
-                      )}
-                    </span>
-                    <span className="shrink-0 font-semibold tabular-nums text-red-600">
-                      {formatSar(payment.amount_sar, locale)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {pastDeadlineDeals.length > 0 && (
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">{t("dashboard.pastDeadline")}</h3>
-              <ul className="space-y-2">
-                {pastDeadlineDeals.map((deal) => (
-                  <li key={deal.id} className="flex items-center justify-between gap-3 text-sm">
-                    <span className="min-w-0">{deal.title}</span>
-                    {deal.deadline && (
-                      <span className="shrink-0 text-muted-foreground">
-                        {formatDualCalendarDate(deal.deadline, locale).primary}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
-    </section>
+      {pastDeadlineDeals.map((deal) => (
+        <li key={deal.id} className="flex items-center gap-3 rounded-2xl bg-card p-3 shadow-card">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-danger-soft text-danger">
+            <TriangleAlert className="size-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold">{deal.title}</p>
+            <p className="truncate text-xs text-muted-foreground">
+              {t("dashboard.pastDeadline")}
+              {deal.deadline ? ` · ${formatDualCalendarDate(deal.deadline, locale).primary}` : ""}
+            </p>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -4,11 +4,11 @@ import { DEAL_STATUS, type DealStatus } from "@/constants/deals";
 // Semantic status colors, consistent everywhere (UI context): pending=amber, in-progress=blue,
 // posted=violet, paid=green, cancelled=red. One mapping, one meaning.
 const STATUS_CLASS: Record<DealStatus, string> = {
-  [DEAL_STATUS.PENDING]: "bg-amber-100 text-amber-800",
-  [DEAL_STATUS.IN_PROGRESS]: "bg-blue-100 text-blue-800",
-  [DEAL_STATUS.POSTED]: "bg-violet-100 text-violet-800",
-  [DEAL_STATUS.PAID]: "bg-green-100 text-green-800",
-  [DEAL_STATUS.CANCELLED]: "bg-red-100 text-red-800",
+  [DEAL_STATUS.PENDING]: "bg-pending-soft text-pending",
+  [DEAL_STATUS.IN_PROGRESS]: "bg-progress-soft text-progress",
+  [DEAL_STATUS.POSTED]: "bg-posted-soft text-posted",
+  [DEAL_STATUS.PAID]: "bg-paid-soft text-paid",
+  [DEAL_STATUS.CANCELLED]: "bg-danger-soft text-danger",
 };
 
 export function DealStatusBadge({ status }: { status: DealStatus }) {

@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { type Locale } from "@/constants/i18n";
+import { cn } from "@/lib/utils";
 import { formatNumber, formatSar } from "@/lib/currency";
 import { type DashboardSummary } from "@/features/dashboard/dashboard.types";
 
@@ -8,20 +9,19 @@ export function SummaryCards({ summary }: { summary: DashboardSummary }) {
   const locale = i18n.language as Locale;
 
   const cards = [
-    { label: t("dashboard.invoiced"), value: formatSar(summary.invoiced, locale) },
-    { label: t("dashboard.collected"), value: formatSar(summary.collected, locale) },
-    { label: t("dashboard.outstanding"), value: formatSar(summary.outstanding, locale) },
-    { label: t("dashboard.dealsPosted"), value: formatNumber(summary.deals_posted, locale) },
-    { label: t("dashboard.dealsPending"), value: formatNumber(summary.deals_pending, locale) },
+    { label: t("dashboard.collected"), value: formatSar(summary.collected, locale), accent: "bg-paid" },
+    { label: t("dashboard.outstanding"), value: formatSar(summary.outstanding, locale), accent: "bg-pending" },
+    { label: t("dashboard.dealsPosted"), value: formatNumber(summary.deals_posted, locale), accent: "bg-posted" },
   ];
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-3 gap-2">
       {cards.map((card) => (
-        <section key={card.label} className="rounded-md border p-4">
-          <p className="text-sm text-muted-foreground">{card.label}</p>
-          <p className="mt-2 text-xl font-semibold tabular-nums">{card.value}</p>
-        </section>
+        <div key={card.label} className="rounded-2xl bg-card p-3 shadow-card">
+          <span className={cn("block h-1 w-6 rounded-full", card.accent)} />
+          <p className="mt-2 text-[13px] font-bold tabular-nums">{card.value}</p>
+          <p className="text-[11px] text-muted-foreground">{card.label}</p>
+        </div>
       ))}
     </div>
   );

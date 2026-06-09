@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 import { EXTRACTION_STATUS, type ExtractionStatus } from "@/constants/snap";
 
 const STATUS_CLASS: Record<ExtractionStatus, string> = {
-  [EXTRACTION_STATUS.PENDING]: "bg-amber-100 text-amber-800",
-  [EXTRACTION_STATUS.EXTRACTED]: "bg-green-100 text-green-800",
-  [EXTRACTION_STATUS.FAILED]: "bg-red-100 text-red-800",
-  [EXTRACTION_STATUS.MANUAL]: "bg-blue-100 text-blue-800",
+  [EXTRACTION_STATUS.PENDING]: "bg-pending-soft text-pending",
+  [EXTRACTION_STATUS.EXTRACTED]: "bg-paid-soft text-paid",
+  [EXTRACTION_STATUS.FAILED]: "bg-danger-soft text-danger",
+  [EXTRACTION_STATUS.MANUAL]: "bg-progress-soft text-progress",
 };
 
 export function SnapStatusBadge({ status }: { status: ExtractionStatus }) {

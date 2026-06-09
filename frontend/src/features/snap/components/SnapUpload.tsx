@@ -1,6 +1,6 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
 import { type Deal } from "@/features/deals/deal.types";
 
 const ACCEPTED_FORMATS_LABEL = "PNG · JPEG · WEBP · PDF";
@@ -22,17 +22,40 @@ export function SnapUpload({ deals, isUploading, errorCode, onUpload }: SnapUplo
     if (file) {
       onUpload(file, dealId === "" ? null : dealId);
     }
-    event.target.value = ""; // allow re-selecting the same file
+    event.target.value = "";
   }
 
   return (
-    <div className="space-y-3 rounded-md border p-4">
-      <p className="text-sm text-muted-foreground">{t("snap.uploadHint")}</p>
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="space-y-3">
+      <button
+        type="button"
+        disabled={isUploading}
+        onClick={() => inputRef.current?.click()}
+        className="flex w-full flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-primary/40 bg-card p-6 text-center disabled:opacity-60"
+      >
+        <span className="flex size-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+          <Upload className="size-5" />
+        </span>
+        <span className="font-semibold">
+          {isUploading ? t("snap.uploading") : t("snap.uploadAction")}
+        </span>
+        <span className="text-xs text-muted-foreground">{t("snap.uploadHint")}</span>
+        <span className="text-[11px] text-muted-foreground">{ACCEPTED_FORMATS_LABEL}</span>
+      </button>
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp,application/pdf"
+        className="hidden"
+        onChange={handleFile}
+      />
+
+      <label className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground">{t("snap.linkDeal")}</span>
         <select
-          className="h-10 rounded-md border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+          className="h-10 flex-1 rounded-xl border bg-card px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
           value={dealId}
-          aria-label={t("snap.linkDeal")}
           onChange={(event) => setDealId(event.target.value)}
         >
           <option value="">{t("snap.noDeal")}</option>
@@ -42,20 +65,9 @@ export function SnapUpload({ deals, isUploading, errorCode, onUpload }: SnapUplo
             </option>
           ))}
         </select>
+      </label>
 
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/png,image/jpeg,image/webp,application/pdf"
-          className="hidden"
-          onChange={handleFile}
-        />
-        <Button type="button" disabled={isUploading} onClick={() => inputRef.current?.click()}>
-          {isUploading ? t("snap.uploading") : t("snap.uploadAction")}
-        </Button>
-      </div>
       {errorCode && <p className="text-sm text-red-600">{t(`snap.errors.${errorCode}`)}</p>}
-      <p className="text-xs text-muted-foreground">{ACCEPTED_FORMATS_LABEL}</p>
     </div>
   );
 }

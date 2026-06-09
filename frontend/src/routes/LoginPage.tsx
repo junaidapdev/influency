@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import { SegmentedTabs } from "@/components/SegmentedTabs";
 import { ROUTES } from "@/constants/routes";
 import { useAuth } from "@/features/auth/auth.context";
 import {
@@ -14,6 +16,9 @@ import {
 } from "@/features/auth/auth.schema";
 
 type AuthMode = "signIn" | "signUp";
+
+const INPUT_CLASS =
+  "h-11 w-full rounded-xl border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -64,97 +69,98 @@ export function LoginPage() {
   }
 
   return (
-    <section className="mx-auto flex w-full max-w-md flex-col gap-6">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold">{t("auth.title")}</h1>
-        <p className="text-sm text-muted-foreground">{t("auth.subtitle")}</p>
+    <section className="flex min-h-[78dvh] flex-col justify-center gap-6">
+      <div className="flex justify-end">
+        <LanguageToggle />
       </div>
 
-      <div className="grid grid-cols-2 rounded-md border p-1">
-        <Button
-          type="button"
-          variant={isSignIn ? "default" : "ghost"}
-          onClick={() => setMode("signIn")}
-        >
-          {t("auth.signInTab")}
-        </Button>
-        <Button
-          type="button"
-          variant={isSignIn ? "ghost" : "default"}
-          onClick={() => setMode("signUp")}
-        >
-          {t("auth.signUpTab")}
-        </Button>
+      <div className="space-y-3 text-center">
+        <span className="bg-brand-gradient mx-auto flex size-14 items-center justify-center rounded-2xl text-2xl font-extrabold text-white shadow-fab">
+          {t("app.name").charAt(0)}
+        </span>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold">{t("auth.title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("auth.subtitle")}</p>
+        </div>
       </div>
 
-      <form
-        className="space-y-4"
-        onSubmit={
-          isSignIn ? signInForm.handleSubmit(handleSignIn) : signUpForm.handleSubmit(handleSignUp)
-        }
-      >
-        {!isSignIn ? (
-          <label className="block space-y-2">
-            <span className="text-sm font-medium">{t("auth.nameLabel")}</span>
-            <input
-              className="h-10 w-full rounded-md border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-              autoComplete="name"
-              {...signUpForm.register("name")}
-            />
-            {signUpForm.formState.errors.name && (
-              <span className="text-sm text-muted-foreground">{t("auth.errors.name")}</span>
-            )}
-          </label>
-        ) : null}
-
-        <label className="block space-y-2">
-          <span className="text-sm font-medium">{t("auth.emailLabel")}</span>
-          <input
-            className="h-10 w-full rounded-md border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-            type="email"
-            autoComplete="email"
-            {...(isSignIn ? signInForm.register("email") : signUpForm.register("email"))}
+      <div className="space-y-5 rounded-2xl bg-card p-5 shadow-card">
+        <div className="flex justify-center">
+          <SegmentedTabs
+            options={[
+              { value: "signIn", label: t("auth.signInTab") },
+              { value: "signUp", label: t("auth.signUpTab") },
+            ]}
+            value={mode}
+            onChange={setMode}
           />
-          {(isSignIn ? signInForm.formState.errors.email : signUpForm.formState.errors.email) && (
-            <span className="text-sm text-muted-foreground">{t("auth.errors.email")}</span>
-          )}
-        </label>
+        </div>
 
-        <label className="block space-y-2">
-          <span className="text-sm font-medium">{t("auth.passwordLabel")}</span>
-          <input
-            className="h-10 w-full rounded-md border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-            type="password"
-            autoComplete={isSignIn ? "current-password" : "new-password"}
-            {...(isSignIn ? signInForm.register("password") : signUpForm.register("password"))}
-          />
-          {(isSignIn
-            ? signInForm.formState.errors.password
-            : signUpForm.formState.errors.password) && (
-            <span className="text-sm text-muted-foreground">{t("auth.errors.password")}</span>
-          )}
-        </label>
-
-        {formError && <p className="text-sm text-muted-foreground">{formError}</p>}
-
-        <Button
-          className="w-full"
-          disabled={
-            isSignIn ? signInForm.formState.isSubmitting : signUpForm.formState.isSubmitting
+        <form
+          className="space-y-4"
+          onSubmit={
+            isSignIn ? signInForm.handleSubmit(handleSignIn) : signUpForm.handleSubmit(handleSignUp)
           }
         >
-          {isSignIn ? t("auth.signInAction") : t("auth.signUpAction")}
-        </Button>
-      </form>
+          {!isSignIn ? (
+            <label className="block space-y-2">
+              <span className="text-sm font-medium">{t("auth.nameLabel")}</span>
+              <input className={INPUT_CLASS} autoComplete="name" {...signUpForm.register("name")} />
+              {signUpForm.formState.errors.name && (
+                <span className="text-sm text-muted-foreground">{t("auth.errors.name")}</span>
+              )}
+            </label>
+          ) : null}
 
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full"
-        onClick={() => void handleGoogleSignIn()}
-      >
-        {t("auth.googleAction")}
-      </Button>
+          <label className="block space-y-2">
+            <span className="text-sm font-medium">{t("auth.emailLabel")}</span>
+            <input
+              className={INPUT_CLASS}
+              type="email"
+              autoComplete="email"
+              {...(isSignIn ? signInForm.register("email") : signUpForm.register("email"))}
+            />
+            {(isSignIn ? signInForm.formState.errors.email : signUpForm.formState.errors.email) && (
+              <span className="text-sm text-muted-foreground">{t("auth.errors.email")}</span>
+            )}
+          </label>
+
+          <label className="block space-y-2">
+            <span className="text-sm font-medium">{t("auth.passwordLabel")}</span>
+            <input
+              className={INPUT_CLASS}
+              type="password"
+              autoComplete={isSignIn ? "current-password" : "new-password"}
+              {...(isSignIn ? signInForm.register("password") : signUpForm.register("password"))}
+            />
+            {(isSignIn
+              ? signInForm.formState.errors.password
+              : signUpForm.formState.errors.password) && (
+              <span className="text-sm text-muted-foreground">{t("auth.errors.password")}</span>
+            )}
+          </label>
+
+          {formError && <p className="text-sm text-red-600">{formError}</p>}
+
+          <Button
+            className="w-full"
+            disabled={
+              isSignIn ? signInForm.formState.isSubmitting : signUpForm.formState.isSubmitting
+            }
+          >
+            {isSignIn ? t("auth.signInAction") : t("auth.signUpAction")}
+          </Button>
+        </form>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={() => void handleGoogleSignIn()}
+        >
+          {t("auth.googleAction")}
+        </Button>
+      </div>
     </section>
   );
 }

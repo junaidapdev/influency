@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { AppHeader } from "@/components/AppHeader";
+import { SegmentedTabs } from "@/components/SegmentedTabs";
 import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
 import { MEETING_VIEW, type MeetingView } from "@/constants/meetings";
 import { useBrands } from "@/hooks/useBrands";
@@ -49,32 +51,26 @@ export function MeetingsPage() {
     }
   }
 
-  function tabClass(value: MeetingView): string {
-    return value === view
-      ? "border-b-2 border-foreground pb-2 text-sm font-medium"
-      : "pb-2 text-sm text-muted-foreground";
-  }
-
   return (
-    <section className="space-y-6">
-      <div className="flex items-center justify-between gap-3">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold">{t("meetings.title")}</h1>
-          <p className="text-sm text-muted-foreground">{t("meetings.subtitle")}</p>
-        </div>
-        <Button onClick={() => setDialog({ open: true, meeting: null })}>
-          {t("meetings.addAction")}
-        </Button>
-      </div>
+    <section className="space-y-4">
+      <AppHeader
+        eyebrow={t("meetings.subtitle")}
+        title={t("meetings.title")}
+        action={
+          <Button size="sm" onClick={() => setDialog({ open: true, meeting: null })}>
+            {t("meetings.addAction")}
+          </Button>
+        }
+      />
 
-      <div className="flex gap-6 border-b">
-        <button type="button" className={tabClass(MEETING_VIEW.CALENDAR)} onClick={() => setView(MEETING_VIEW.CALENDAR)}>
-          {t("meetings.views.calendar")}
-        </button>
-        <button type="button" className={tabClass(MEETING_VIEW.LIST)} onClick={() => setView(MEETING_VIEW.LIST)}>
-          {t("meetings.views.list")}
-        </button>
-      </div>
+      <SegmentedTabs
+        options={[
+          { value: MEETING_VIEW.CALENDAR, label: t("meetings.views.calendar") },
+          { value: MEETING_VIEW.LIST, label: t("meetings.views.list") },
+        ]}
+        value={view}
+        onChange={setView}
+      />
 
       {meetingsQuery.isPending ? (
         <div className="space-y-3" aria-busy="true">

@@ -22,7 +22,7 @@ export function MeetingList({ meetings, onEdit, onCancel, isMutating }: MeetingL
       {meetings.map((meeting) => {
         const isUpcoming = meeting.status === MEETING_STATUS.UPCOMING;
         return (
-          <li key={meeting.id} className="flex items-start justify-between gap-3 rounded-md border p-4">
+          <li key={meeting.id} className="flex items-start justify-between gap-3 rounded-2xl bg-card p-4 shadow-card">
             <div className="min-w-0 space-y-1">
               <p className="font-medium">{meeting.title}</p>
               <p className="text-sm text-muted-foreground">

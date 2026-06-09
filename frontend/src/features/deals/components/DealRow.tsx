@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { BrandAvatar } from "@/components/BrandAvatar";
 import { type Locale } from "@/constants/i18n";
 import { DEAL_STATUS } from "@/constants/deals";
-import { formatSar } from "@/lib/currency";
-import { formatDualCalendarDate } from "@/lib/date";
+import { formatNumber, formatSar } from "@/lib/currency";
 import { DealStatusBadge } from "@/features/deals/components/DealStatusBadge";
 import { isDeliverablePosted } from "@/features/deals/status";
 import { type Deal } from "@/features/deals/deal.types";
@@ -21,29 +21,41 @@ export function DealRow({ deal, brandName, onToggleDeliverable, onCancel, isMuta
   const { t, i18n } = useTranslation();
   const locale = i18n.language as Locale;
   const [open, setOpen] = useState(false);
-  const deadline = deal.deadline ? formatDualCalendarDate(deal.deadline, locale) : null;
   const isClosed = deal.status === DEAL_STATUS.PAID || deal.status === DEAL_STATUS.CANCELLED;
 
+  const total = deal.deliverables.length;
+  const postedCount = deal.deliverables.filter(isDeliverablePosted).length;
+  const progress = total > 0 ? Math.round((postedCount / total) * 100) : 0;
+  const summary = deal.deliverables
+    .map((d) => `${formatNumber(d.count, locale)} ${t(`deals.deliverableType.${d.type}`)}`)
+    .join(" · ");
+
   return (
-    <li className="rounded-md border">
+    <li className="rounded-2xl bg-card shadow-card">
       <button
         type="button"
-        className="flex w-full items-start justify-between gap-3 p-4 text-start"
+        className="w-full p-4 text-start"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
       >
-        <div className="min-w-0 space-y-1">
-          <p className="font-semibold">{deal.title}</p>
-          <p className="text-sm text-muted-foreground">{brandName}</p>
-          {deadline && (
-            <p className="text-sm text-muted-foreground">
-              {t("deals.deadline")}: {deadline.primary}
+        <div className="flex items-start gap-3">
+          <BrandAvatar name={brandName || deal.title} seed={deal.brand_id} />
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-semibold">{deal.title}</p>
+            <p className="truncate text-xs text-muted-foreground">
+              {[brandName, summary].filter(Boolean).join(" · ")}
             </p>
-          )}
-        </div>
-        <div className="flex shrink-0 flex-col items-end gap-1">
+          </div>
           <DealStatusBadge status={deal.status} />
-          <span className="text-sm font-semibold tabular-nums">
+        </div>
+        <div className="mt-3 flex items-center gap-3">
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-primary" style={{ width: `${progress}%` }} />
+          </div>
+          <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+            {formatNumber(postedCount, locale)}/{formatNumber(total, locale)}
+          </span>
+          <span className="shrink-0 text-sm font-bold tabular-nums">
             {formatSar(deal.agreed_amount_sar, locale)}
           </span>
         </div>

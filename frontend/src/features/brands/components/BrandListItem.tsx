@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { BrandAvatar } from "@/components/BrandAvatar";
 import { type Locale } from "@/constants/i18n";
 import { brandDetailPath } from "@/constants/routes";
 import { type Brand } from "@/features/brands/brand.types";
@@ -20,8 +21,9 @@ export function BrandListItem({
   const hasContact = Boolean(brand.contact_name || brand.contact_email || brand.contact_phone);
 
   return (
-    <li className="flex items-start justify-between gap-3 rounded-md border p-4">
-      <div className="min-w-0 space-y-1">
+    <li className="flex items-start gap-3 rounded-2xl bg-card p-4 shadow-card">
+      <BrandAvatar name={primaryName} seed={brand.id} />
+      <div className="min-w-0 flex-1 space-y-1">
         <Link className="font-semibold hover:underline" to={brandDetailPath(brand.id)}>
           {primaryName}
         </Link>

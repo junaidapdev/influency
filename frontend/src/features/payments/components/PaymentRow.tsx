@@ -29,7 +29,7 @@ export function PaymentRow({
   const dateText = dateValue ? formatDualCalendarDate(dateValue, locale).primary : null;
 
   return (
-    <li className="flex items-start justify-between gap-3 rounded-md border p-4">
+    <li className="flex items-start justify-between gap-3 rounded-2xl bg-card p-4 shadow-card">
       <div className="min-w-0 space-y-1">
         <p className="font-medium">{dealTitle}</p>
         {dateText && (
