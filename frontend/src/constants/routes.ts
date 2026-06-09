@@ -4,6 +4,7 @@ export const ROUTES = {
   login: "/login",
   verifyEmail: "/verify-email",
   dashboard: "/dashboard",
+  brands: "/brands",
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
