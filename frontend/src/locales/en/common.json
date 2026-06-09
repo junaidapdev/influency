@@ -7,8 +7,43 @@
     "label": "Language",
     "switchTo": "العربية"
   },
-  "home": {
+  "auth": {
+    "title": "Welcome back",
+    "subtitle": "Sign in to your private Influency workspace.",
+    "signInTab": "Sign in",
+    "signUpTab": "Create account",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "signInAction": "Sign in",
+    "signUpAction": "Create account",
+    "googleAction": "Continue with Google",
+    "signOut": "Sign out",
+    "errors": {
+      "email": "Enter a valid email address.",
+      "password": "Password must be at least 6 characters.",
+      "name": "Enter your name.",
+      "signIn": "We could not sign you in. Check your email and password.",
+      "signUp": "We could not create the account. Try again.",
+      "google": "Google sign-in could not start. Try again.",
+      "verify": "We could not verify that code. Check the email and code."
+    }
+  },
+  "verifyEmail": {
+    "title": "Verify your email",
+    "subtitle": "Enter the 6-digit code InsForge sent to your inbox.",
+    "codeLabel": "Verification code",
+    "codeError": "Enter the 6-digit code.",
+    "action": "Verify and continue"
+  },
+  "dashboard": {
     "title": "Dashboard",
-    "empty": "Foundation ready. Features arrive in the next chunks."
+    "subtitle": "Your workspace is ready. Deal data arrives in the next chunks.",
+    "today": "Today",
+    "invoiced": "Invoiced this month",
+    "openItems": "Open items",
+    "emptyTitle": "No business data yet",
+    "emptyBody": "Brands, deals, payments, meetings, and Snap analytics will fill this dashboard as the next chunks land.",
+    "profileReady": "Profile ready. Reminder lead time: {{minutes}} minutes."
   }
 }
