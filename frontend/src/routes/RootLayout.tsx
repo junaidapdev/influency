@@ -35,6 +35,9 @@ export function RootLayout() {
               <NavLink to={ROUTES.payments} className={navLinkClass}>
                 {t("nav.payments")}
               </NavLink>
+              <NavLink to={ROUTES.meetings} className={navLinkClass}>
+                {t("nav.meetings")}
+              </NavLink>
             </nav>
           )}
         </div>

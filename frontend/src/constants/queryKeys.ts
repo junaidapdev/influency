@@ -15,4 +15,11 @@ export const queryKeys = {
     ["dashboard-summary", userId, month] as const,
   overduePayments: (userId: string, today: string) =>
     ["overdue-payments", userId, today] as const,
+  // ["meetings", userId] is also the prefix of the "today" key, so invalidating it refreshes both.
+  meetings: (userId: string) => ["meetings", userId] as const,
+  meetingsToday: (userId: string, today: string) =>
+    ["meetings", userId, "today", today] as const,
+  reminders: (userId: string) => ["reminders", userId] as const,
+  remindersToday: (userId: string, today: string) =>
+    ["reminders", userId, "today", today] as const,
 } as const;

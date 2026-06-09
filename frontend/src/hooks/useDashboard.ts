@@ -3,23 +3,29 @@ import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/constants/queryKeys";
 import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
 import { ACTIVE_DEAL_STATUSES } from "@/constants/dashboard";
+import { TODAY_WINDOW_HOURS } from "@/constants/reminders";
 import { useAuth } from "@/features/auth/auth.context";
 import { todayIsoDate } from "@/lib/date";
 import { listDeals } from "@/features/deals/deal.api";
 import { getDashboardSummary, listOverduePayments } from "@/features/dashboard/dashboard.api";
+import { listTodayMeetings } from "@/features/meetings/meeting.api";
+import { listTodayReminders } from "@/features/reminders/reminder.api";
 import { type Deal } from "@/features/deals/deal.types";
-import { type TodayItem } from "@/features/dashboard/dashboard.types";
+import { type Meeting } from "@/features/meetings/meeting.types";
+import { type Reminder } from "@/features/reminders/reminder.types";
 
 /**
- * Dashboard data: the month rollup via the aggregate RPC, plus the lists "Needs attention" needs.
- * Past-deadline deals are derived from the (already-fetched, cache-shared) deals list — no extra
- * query, no N+1. The Today panel's sources (meetings + reminders) are wired in chunk 06.
+ * Dashboard data: the month rollup via the aggregate RPC, plus the lists "Needs attention" needs,
+ * plus the "Today" panel's meetings + reminders due in the next 24h. Past-deadline deals are
+ * derived from the (already-fetched, cache-shared) deals list — no extra query, no N+1.
  */
 export function useDashboard() {
   const { user } = useAuth();
   const userId = user?.id ?? null;
   const today = todayIsoDate();
   const month = today.slice(0, 7); // YYYY-MM — the summary's "current month" cache dimension.
+  const nowIso = new Date().toISOString();
+  const windowEndIso = new Date(Date.now() + TODAY_WINDOW_HOURS * 60 * 60 * 1000).toISOString();
 
   const summaryQuery = useQuery({
     queryKey: queryKeys.dashboardSummary(userId ?? "", month),
@@ -36,6 +42,18 @@ export function useDashboard() {
   const overduePaymentsQuery = useQuery({
     queryKey: queryKeys.overduePayments(userId ?? "", today),
     queryFn: () => listOverduePayments(userId ?? "", today),
+    enabled: userId !== null,
+  });
+
+  const todayMeetingsQuery = useQuery({
+    queryKey: queryKeys.meetingsToday(userId ?? "", today),
+    queryFn: () => listTodayMeetings(userId ?? "", nowIso, windowEndIso),
+    enabled: userId !== null,
+  });
+
+  const todayRemindersQuery = useQuery({
+    queryKey: queryKeys.remindersToday(userId ?? "", today),
+    queryFn: () => listTodayReminders(userId ?? "", windowEndIso),
     enabled: userId !== null,
   });
 
@@ -57,9 +75,12 @@ export function useDashboard() {
     [deals],
   );
 
-  const todayItems = useMemo<{ meetings: TodayItem[]; reminders: TodayItem[] }>(
-    () => ({ meetings: [], reminders: [] }),
-    [],
+  const todayData = useMemo<{ meetings: Meeting[]; reminders: Reminder[] }>(
+    () => ({
+      meetings: todayMeetingsQuery.data ?? [],
+      reminders: todayRemindersQuery.data ?? [],
+    }),
+    [todayMeetingsQuery.data, todayRemindersQuery.data],
   );
 
   return {
@@ -68,6 +89,6 @@ export function useDashboard() {
     overduePaymentsQuery,
     pastDeadlineDeals,
     dealTitleById,
-    today: todayItems,
+    today: todayData,
   };
 }

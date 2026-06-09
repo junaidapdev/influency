@@ -24,6 +24,14 @@ export function formatDualCalendarDate(isoDate: string, locale: Locale): DualCal
     : { primary: gregorian, secondary: hijri };
 }
 
+/** Local time-of-day (e.g. "2:30 PM" / "٢:٣٠ م") for a stored ISO timestamp. */
+export function formatTime(isoDate: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(isoDate));
+}
+
 /**
  * Today's date as a LOCAL-time `YYYY-MM-DD` string. Uses local calendar fields, not
  * `toISOString()` (which is UTC and would record the wrong day near midnight for non-UTC users).

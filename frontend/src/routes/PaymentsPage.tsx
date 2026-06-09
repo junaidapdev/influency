@@ -5,6 +5,7 @@ import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
 import { PAYMENT_STATUS, PAYMENT_TAB, type PaymentTab } from "@/constants/payments";
 import { useDeals } from "@/hooks/useDeals";
 import { usePayments } from "@/hooks/usePayments";
+import { useReminders } from "@/hooks/useReminders";
 import { todayIsoDate } from "@/lib/date";
 import { AddPaymentDialog } from "@/features/payments/components/AddPaymentDialog";
 import { PaymentRow } from "@/features/payments/components/PaymentRow";
@@ -29,10 +30,12 @@ export function PaymentsPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { paymentsQuery, createMutation, markReceivedMutation } = usePayments();
   const { dealsQuery } = useDeals(EMPTY_DEAL_FILTERS);
+  const { sendPaymentReminderMutation } = useReminders();
 
   const deals = useMemo(() => dealsQuery.data ?? [], [dealsQuery.data]);
   const payments = paymentsQuery.data ?? [];
   const canAdd = deals.length > 0;
+  const isBusy = markReceivedMutation.isPending || sendPaymentReminderMutation.isPending;
 
   const dealTitleById = useMemo(() => {
     const map = new Map<string, string>();
@@ -52,6 +55,13 @@ export function PaymentsPage() {
 
   function handleMarkReceived(paymentId: string) {
     markReceivedMutation.mutate({ paymentId, receivedDate: todayIsoDate() });
+  }
+
+  function handleSendReminder(payment: Payment) {
+    sendPaymentReminderMutation.mutate({
+      paymentId: payment.id,
+      label: dealTitleById.get(payment.deal_id) ?? "",
+    });
   }
 
   function tabClass(value: PaymentTab): string {
@@ -100,7 +110,8 @@ export function PaymentsPage() {
               payment={payment}
               dealTitle={dealTitleById.get(payment.deal_id) ?? ""}
               onMarkReceived={handleMarkReceived}
-              isMarking={markReceivedMutation.isPending}
+              onSendReminder={handleSendReminder}
+              isBusy={isBusy}
             />
           ))}
         </ul>

@@ -20,8 +20,9 @@ export function TodayPanel({
       ) : (
         <ul className="space-y-2">
           {items.map((item) => (
-            <li key={item.id} className="text-sm">
-              {item.title}
+            <li key={item.id} className="flex items-center justify-between gap-3 text-sm">
+              <span className="min-w-0">{item.title}</span>
+              <span className="shrink-0 text-muted-foreground">{item.at}</span>
             </li>
           ))}
         </ul>
