@@ -57,7 +57,8 @@
     "brands": "Brands",
     "deals": "Deals",
     "payments": "Payments",
-    "meetings": "Meetings"
+    "meetings": "Meetings",
+    "snap": "Snap"
   },
   "common": {
     "save": "Save",
@@ -249,6 +250,40 @@
       "scheduledAt": "Pick a date and time.",
       "save": "We could not save this meeting. Try again.",
       "load": "We could not load your meetings. Refresh to try again."
+    }
+  },
+  "snap": {
+    "title": "Snap analytics",
+    "subtitle": "Upload a Snapchat Insights screenshot and we'll read the numbers.",
+    "empty": "No reports yet. Upload a screenshot to extract its metrics.",
+    "uploadHint": "Upload a Snap Insights screenshot (image or PDF). PDFs are converted in your browser.",
+    "uploadAction": "Upload screenshot",
+    "uploading": "Uploading…",
+    "extracting": "Reading the screenshot…",
+    "failedHint": "We couldn't read this one — enter the numbers manually.",
+    "editValues": "Edit values",
+    "enterManually": "Enter manually",
+    "linkDeal": "Linked deal",
+    "noDeal": "No deal",
+    "status": {
+      "pending": "Reading…",
+      "extracted": "Extracted",
+      "failed": "Failed",
+      "manual": "Manual"
+    },
+    "fields": {
+      "views": "Views",
+      "reach": "Reach",
+      "story_views": "Story views",
+      "screenshot_count": "Screenshots",
+      "swipe_ups": "Swipe ups"
+    },
+    "errors": {
+      "type": "That file isn't a supported image. Use PNG, JPEG, WEBP, or PDF.",
+      "size": "That file is too large (max 10 MB).",
+      "upload": "We could not upload that file. Try again.",
+      "metric": "Enter whole numbers (or leave blank).",
+      "load": "We could not load your reports. Refresh to try again."
     }
   }
 }

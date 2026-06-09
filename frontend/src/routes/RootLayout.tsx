@@ -38,6 +38,9 @@ export function RootLayout() {
               <NavLink to={ROUTES.meetings} className={navLinkClass}>
                 {t("nav.meetings")}
               </NavLink>
+              <NavLink to={ROUTES.snap} className={navLinkClass}>
+                {t("nav.snap")}
+              </NavLink>
             </nav>
           )}
         </div>
