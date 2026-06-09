@@ -1,66 +1,112 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { BrandAvatar } from "@/components/BrandAvatar";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { type Locale } from "@/constants/i18n";
+import { ROUTES } from "@/constants/routes";
 import { formatTime } from "@/lib/date";
 import { useAuth } from "@/features/auth/auth.context";
 import { useDashboard } from "@/hooks/useDashboard";
+import { useReports } from "@/hooks/useReports";
+import { HeroCard } from "@/features/dashboard/components/HeroCard";
 import { NeedsAttentionPanel } from "@/features/dashboard/components/NeedsAttentionPanel";
+import { QuickAccess } from "@/features/dashboard/components/QuickAccess";
 import { SummaryCards } from "@/features/dashboard/components/SummaryCards";
 import { TodayPanel } from "@/features/dashboard/components/TodayPanel";
 import { type TodayItem } from "@/features/dashboard/dashboard.types";
 
-const SKELETON_KEYS = ["a", "b", "c", "d", "e"];
-
 export function DashboardPage() {
   const { t, i18n } = useTranslation();
   const locale = i18n.language as Locale;
-  const { signOut } = useAuth();
+  const { user, appUser, signOut } = useAuth();
   const { summaryQuery, overduePaymentsQuery, pastDeadlineDeals, dealTitleById, today } =
     useDashboard();
+  const { monthlyQuery } = useReports();
 
-  const todayMeetingItems: TodayItem[] = today.meetings.map((meeting) => ({
-    id: meeting.id,
-    title: meeting.title,
-    at: formatTime(meeting.scheduled_at, locale),
-  }));
-  const todayReminderItems: TodayItem[] = today.reminders.map((reminder) => ({
-    id: reminder.id,
-    title: locale === "ar" ? reminder.message_ar : reminder.message_en,
-    at: formatTime(reminder.due_at, locale),
-  }));
+  const name = appUser?.display_name ?? "";
+  const summary = summaryQuery.data;
+  const trend = (monthlyQuery.data ?? []).map((row) => row.invoiced);
+
+  // Merge meetings + reminders into one timeline, ordered by their actual time (not type).
+  const todayItems: TodayItem[] = [
+    ...today.meetings.map((meeting) => ({
+      item: {
+        id: meeting.id,
+        title: meeting.title,
+        subtitle: meeting.location_or_link ?? undefined,
+        at: formatTime(meeting.scheduled_at, locale),
+        accent: "progress" as const,
+      },
+      ts: meeting.scheduled_at,
+    })),
+    ...today.reminders.map((reminder) => ({
+      item: {
+        id: reminder.id,
+        title: locale === "ar" ? reminder.message_ar : reminder.message_en,
+        at: formatTime(reminder.due_at, locale),
+        accent: "pending" as const,
+      },
+      ts: reminder.due_at,
+    })),
+  ]
+    .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime())
+    .map((entry) => entry.item);
 
   return (
-    <section className="space-y-6">
-      <div className="flex items-center justify-between gap-3">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
-          <p className="text-sm text-muted-foreground">{t("dashboard.subtitle")}</p>
+    <div className="space-y-5">
+      <header className="flex items-center justify-between gap-3 pt-1">
+        <div className="flex min-w-0 items-center gap-3">
+          <BrandAvatar name={name || "?"} seed={user?.id} />
+          <div className="min-w-0">
+            <p className="text-sm text-muted-foreground">{t("dashboard.greeting")}</p>
+            <p className="truncate text-lg font-bold leading-tight">{name || t("app.name")}</p>
+          </div>
         </div>
-        <Button type="button" variant="outline" onClick={() => void signOut()}>
-          {t("auth.signOut")}
-        </Button>
-      </div>
+        <div className="flex shrink-0 items-center gap-2">
+          <LanguageToggle />
+          <Button variant="outline" size="sm" onClick={() => void signOut()}>
+            {t("auth.signOut")}
+          </Button>
+        </div>
+      </header>
 
       {summaryQuery.isPending ? (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true">
-          {SKELETON_KEYS.map((key) => (
-            <div key={key} className="h-24 rounded-md bg-muted" />
-          ))}
-        </div>
+        <div className="h-44 rounded-3xl bg-muted" aria-busy="true" />
       ) : summaryQuery.isError ? (
-        <p className="text-sm text-red-600">{t("dashboard.error")}</p>
-      ) : summaryQuery.data ? (
-        <SummaryCards summary={summaryQuery.data} />
+        <p className="rounded-2xl bg-card p-4 text-sm text-danger shadow-card">
+          {t("dashboard.error")}
+        </p>
+      ) : summary ? (
+        <>
+          <HeroCard invoiced={summary.invoiced} collected={summary.collected} trend={trend} />
+          <SummaryCards summary={summary} />
+        </>
       ) : null}
 
-      <div className="grid gap-3 lg:grid-cols-2">
+      <section className="space-y-2">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-base font-bold">{t("dashboard.today")}</h2>
+          <Link to={ROUTES.meetings} className="text-sm font-semibold text-primary">
+            {t("nav.calendar")}
+          </Link>
+        </div>
+        <TodayPanel items={todayItems} />
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="px-1 text-base font-bold">{t("dashboard.needsAttention")}</h2>
         <NeedsAttentionPanel
           overduePayments={overduePaymentsQuery.data ?? []}
           pastDeadlineDeals={pastDeadlineDeals}
           dealTitleById={dealTitleById}
         />
-        <TodayPanel meetings={todayMeetingItems} reminders={todayReminderItems} />
-      </div>
-    </section>
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="px-1 text-base font-bold">{t("dashboard.quickAccess")}</h2>
+        <QuickAccess />
+      </section>
+    </div>
   );
 }

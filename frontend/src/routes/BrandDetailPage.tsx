@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { ArrowLeft } from "lucide-react";
+import { BrandAvatar } from "@/components/BrandAvatar";
 import { type Locale } from "@/constants/i18n";
 import { ROUTES } from "@/constants/routes";
 import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
@@ -42,22 +44,30 @@ export function BrandDetailPage() {
   const secondaryName = locale === "ar" ? brand.name_en : brand.name_ar;
 
   return (
-    <section className="space-y-6">
-      <div className="space-y-2">
-        <Link className="text-sm text-muted-foreground underline" to={ROUTES.brands}>
-          {t("brands.detail.back")}
-        </Link>
-        <h1 className="text-2xl font-bold">{primaryName}</h1>
-        <p className="text-sm text-muted-foreground">{secondaryName}</p>
-        {brand.contact_name && <p className="text-sm text-muted-foreground">{brand.contact_name}</p>}
+    <section className="space-y-5">
+      <Link
+        className="inline-flex items-center gap-1 text-sm font-semibold text-primary"
+        to={ROUTES.brands}
+      >
+        {/* Icon flips with direction so it points "back" correctly in both LTR and RTL. */}
+        <ArrowLeft className="size-4 rtl:rotate-180" />
+        {t("brands.detail.back")}
+      </Link>
+      <div className="flex items-start gap-3">
+        <BrandAvatar name={primaryName} seed={brand.id} className="size-12" />
+        <div className="min-w-0 space-y-1">
+          <h1 className="text-2xl font-bold">{primaryName}</h1>
+          <p className="text-sm text-muted-foreground">{secondaryName}</p>
+          {brand.contact_name && <p className="text-sm text-muted-foreground">{brand.contact_name}</p>}
         {brand.contact_email && (
           <p className="text-sm text-muted-foreground break-all">{brand.contact_email}</p>
         )}
-        {brand.contact_phone && (
-          <p className="text-sm text-muted-foreground" dir="ltr">
-            {brand.contact_phone}
-          </p>
-        )}
+          {brand.contact_phone && (
+            <p className="text-sm text-muted-foreground" dir="ltr">
+              {brand.contact_phone}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="space-y-3">
@@ -73,7 +83,7 @@ export function BrandDetailPage() {
             <div className="h-16 rounded-md bg-muted" />
           </div>
         ) : dealsQuery.isError ? (
-          <p className="text-sm text-red-600">{t("deals.errors.load")}</p>
+          <p className="text-sm text-danger">{t("deals.errors.load")}</p>
         ) : deals.length === 0 ? (
           <p className="rounded-md border border-dashed p-6 text-center text-sm text-muted-foreground">
             {t("brands.detail.noDeals")}
@@ -83,7 +93,7 @@ export function BrandDetailPage() {
             {deals.map((deal) => (
               <li
                 key={deal.id}
-                className="flex items-center justify-between gap-3 rounded-md border p-4"
+                className="flex items-center justify-between gap-3 rounded-2xl bg-card p-4 shadow-card"
               >
                 <span className="min-w-0 font-medium">{deal.title}</span>
                 <div className="flex shrink-0 items-center gap-3">

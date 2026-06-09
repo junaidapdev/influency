@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { AppHeader } from "@/components/AppHeader";
 import { useBrands } from "@/hooks/useBrands";
 import { BrandFormDialog } from "@/features/brands/components/BrandFormDialog";
 import { BrandListItem } from "@/features/brands/components/BrandListItem";
@@ -37,14 +38,18 @@ export function BrandsPage() {
   }
 
   return (
-    <section className="space-y-6">
-      <div className="flex items-center justify-between gap-3">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold">{t("brands.title")}</h1>
-          <p className="text-sm text-muted-foreground">{t("brands.subtitle")}</p>
-        </div>
-        {brands.length > 0 && <Button onClick={openAdd}>{t("brands.addAction")}</Button>}
-      </div>
+    <section className="space-y-4">
+      <AppHeader
+        eyebrow={t("brands.subtitle")}
+        title={t("brands.title")}
+        action={
+          brands.length > 0 ? (
+            <Button size="sm" onClick={openAdd}>
+              {t("brands.addAction")}
+            </Button>
+          ) : undefined
+        }
+      />
 
       {brandsQuery.isPending ? (
         <div className="space-y-3" aria-busy="true">
@@ -52,7 +57,7 @@ export function BrandsPage() {
           <div className="h-20 rounded-md bg-muted" />
         </div>
       ) : brandsQuery.isError ? (
-        <p className="text-sm text-red-600">{t("brands.errors.load")}</p>
+        <p className="text-sm text-danger">{t("brands.errors.load")}</p>
       ) : brands.length === 0 ? (
         <BrandsEmptyState onAdd={openAdd} />
       ) : (

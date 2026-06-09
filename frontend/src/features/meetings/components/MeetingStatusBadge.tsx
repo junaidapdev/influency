@@ -2,9 +2,9 @@ import { useTranslation } from "react-i18next";
 import { MEETING_STATUS, type MeetingStatus } from "@/constants/meetings";
 
 const STATUS_CLASS: Record<MeetingStatus, string> = {
-  [MEETING_STATUS.UPCOMING]: "bg-blue-100 text-blue-800",
-  [MEETING_STATUS.DONE]: "bg-green-100 text-green-800",
-  [MEETING_STATUS.CANCELLED]: "bg-red-100 text-red-800",
+  [MEETING_STATUS.UPCOMING]: "bg-posted-soft text-posted",
+  [MEETING_STATUS.DONE]: "bg-paid-soft text-paid",
+  [MEETING_STATUS.CANCELLED]: "bg-danger-soft text-danger",
 };
 
 export function MeetingStatusBadge({ status }: { status: MeetingStatus }) {

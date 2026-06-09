@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { AppHeader } from "@/components/AppHeader";
 import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
 import { useDeals } from "@/hooks/useDeals";
 import { useSnap } from "@/hooks/useSnap";
@@ -30,11 +31,8 @@ export function SnapPage() {
   }
 
   return (
-    <section className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold">{t("snap.title")}</h1>
-        <p className="text-sm text-muted-foreground">{t("snap.subtitle")}</p>
-      </div>
+    <section className="space-y-4">
+      <AppHeader eyebrow={t("snap.subtitle")} title={t("snap.title")} />
 
       <SnapUpload
         deals={deals}
@@ -49,7 +47,7 @@ export function SnapPage() {
           <div className="h-28 rounded-md bg-muted" />
         </div>
       ) : snapReportsQuery.isError ? (
-        <p className="text-sm text-red-600">{t("snap.errors.load")}</p>
+        <p className="text-sm text-danger">{t("snap.errors.load")}</p>
       ) : reports.length === 0 ? (
         <p className="rounded-md border border-dashed p-8 text-center text-sm text-muted-foreground">
           {t("snap.empty")}

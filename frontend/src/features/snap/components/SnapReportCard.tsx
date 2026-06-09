@@ -72,7 +72,7 @@ export function SnapReportCard({
   }
 
   return (
-    <li className="space-y-3 rounded-md border p-4">
+    <li className="space-y-3 rounded-2xl bg-card p-4 shadow-card">
       <div className="flex items-center justify-between gap-3">
         <SnapStatusBadge status={report.extraction_status} />
         <span className="text-sm text-muted-foreground">
@@ -99,7 +99,7 @@ export function SnapReportCard({
             </label>
           ))}
           {Object.keys(errors).length > 0 && (
-            <p className="text-sm text-red-600">{t("snap.errors.metric")}</p>
+            <p className="text-sm text-danger">{t("snap.errors.metric")}</p>
           )}
           <div className="flex justify-end gap-2">
             <Button type="button" variant="ghost" size="sm" onClick={() => setEditing(false)}>

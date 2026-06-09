@@ -4,9 +4,13 @@ import { type dashboardSummarySchema } from "@/features/dashboard/dashboard.sche
 /** Current-month top-line rollup from the dashboard_summary RPC. */
 export type DashboardSummary = z.infer<typeof dashboardSummarySchema>;
 
-/** A single "Today" entry (meeting or reminder). Sources are wired in chunk 06. */
+export type TodayAccent = "progress" | "pending" | "posted" | "paid" | "danger";
+
+/** A single "Today" entry (meeting or reminder), shaped for display. */
 export interface TodayItem {
   id: string;
   title: string;
+  subtitle?: string;
   at: string;
+  accent: TodayAccent;
 }

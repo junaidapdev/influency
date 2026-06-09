@@ -1,57 +1,21 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { LanguageToggle } from "@/components/LanguageToggle";
-import { ROUTES } from "@/constants/routes";
+import { Outlet } from "react-router-dom";
+import { BottomNav } from "@/components/BottomNav";
 import { useAuth } from "@/features/auth/auth.context";
 
-function navLinkClass({ isActive }: { isActive: boolean }): string {
-  return isActive
-    ? "text-sm font-medium text-foreground"
-    : "text-sm text-muted-foreground hover:text-foreground";
-}
-
-/** App shell: header with brand + nav + language toggle, and the routed page below. Mobile-first. */
+/**
+ * App shell: a mobile-first lavender canvas with a centered phone-width column. Authenticated
+ * screens get the floating bottom tab bar + FAB; each page renders its own AppHeader.
+ */
 export function RootLayout() {
-  const { t } = useTranslation();
   const { status } = useAuth();
   const isAuthenticated = status === "authenticated";
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
-        <div className="flex items-center gap-4">
-          <span className="text-lg font-semibold">{t("app.name")}</span>
-          {isAuthenticated && (
-            <nav className="flex items-center gap-4">
-              <NavLink to={ROUTES.dashboard} className={navLinkClass}>
-                {t("nav.dashboard")}
-              </NavLink>
-              <NavLink to={ROUTES.brands} className={navLinkClass}>
-                {t("nav.brands")}
-              </NavLink>
-              <NavLink to={ROUTES.deals} className={navLinkClass}>
-                {t("nav.deals")}
-              </NavLink>
-              <NavLink to={ROUTES.payments} className={navLinkClass}>
-                {t("nav.payments")}
-              </NavLink>
-              <NavLink to={ROUTES.meetings} className={navLinkClass}>
-                {t("nav.meetings")}
-              </NavLink>
-              <NavLink to={ROUTES.snap} className={navLinkClass}>
-                {t("nav.snap")}
-              </NavLink>
-              <NavLink to={ROUTES.reports} className={navLinkClass}>
-                {t("nav.reports")}
-              </NavLink>
-            </nav>
-          )}
-        </div>
-        <LanguageToggle />
-      </header>
-      <main className="mx-auto w-full max-w-5xl p-4">
+      <div className="mx-auto w-full max-w-md px-4 pt-4 pb-28">
         <Outlet />
-      </main>
+      </div>
+      {isAuthenticated && <BottomNav />}
     </div>
   );
 }

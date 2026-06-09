@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { AppHeader } from "@/components/AppHeader";
+import { SegmentedTabs } from "@/components/SegmentedTabs";
 import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
 import { PAYMENT_STATUS, PAYMENT_TAB, type PaymentTab } from "@/constants/payments";
 import { useDeals } from "@/hooks/useDeals";
@@ -64,30 +66,28 @@ export function PaymentsPage() {
     });
   }
 
-  function tabClass(value: PaymentTab): string {
-    return value === tab
-      ? "border-b-2 border-foreground pb-2 text-sm font-medium"
-      : "pb-2 text-sm text-muted-foreground";
-  }
-
   return (
-    <section className="space-y-6">
-      <div className="flex items-center justify-between gap-3">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold">{t("payments.title")}</h1>
-          <p className="text-sm text-muted-foreground">{t("payments.subtitle")}</p>
-        </div>
-        {canAdd && <Button onClick={() => setDialogOpen(true)}>{t("payments.addAction")}</Button>}
-      </div>
+    <section className="space-y-4">
+      <AppHeader
+        eyebrow={t("payments.subtitle")}
+        title={t("payments.title")}
+        action={
+          canAdd ? (
+            <Button size="sm" onClick={() => setDialogOpen(true)}>
+              {t("payments.addAction")}
+            </Button>
+          ) : undefined
+        }
+      />
 
-      <div className="flex gap-6 border-b">
-        <button type="button" className={tabClass(PAYMENT_TAB.PENDING)} onClick={() => setTab(PAYMENT_TAB.PENDING)}>
-          {t("payments.tabs.pending")} ({pending.length})
-        </button>
-        <button type="button" className={tabClass(PAYMENT_TAB.RECEIVED)} onClick={() => setTab(PAYMENT_TAB.RECEIVED)}>
-          {t("payments.tabs.received")} ({received.length})
-        </button>
-      </div>
+      <SegmentedTabs
+        options={[
+          { value: PAYMENT_TAB.PENDING, label: `${t("payments.tabs.pending")} (${pending.length})` },
+          { value: PAYMENT_TAB.RECEIVED, label: `${t("payments.tabs.received")} (${received.length})` },
+        ]}
+        value={tab}
+        onChange={setTab}
+      />
 
       {paymentsQuery.isPending ? (
         <div className="space-y-3" aria-busy="true">
@@ -95,7 +95,7 @@ export function PaymentsPage() {
           <div className="h-20 rounded-md bg-muted" />
         </div>
       ) : paymentsQuery.isError ? (
-        <p className="text-sm text-red-600">{t("payments.errors.load")}</p>
+        <p className="text-sm text-danger">{t("payments.errors.load")}</p>
       ) : payments.length === 0 ? (
         <PaymentsEmptyState canAdd={canAdd} onAdd={() => setDialogOpen(true)} />
       ) : visible.length === 0 ? (

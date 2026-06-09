@@ -1,32 +1,45 @@
 import { useTranslation } from "react-i18next";
-import { type TodayItem } from "@/features/dashboard/dashboard.types";
+import { cn } from "@/lib/utils";
+import { type TodayAccent, type TodayItem } from "@/features/dashboard/dashboard.types";
 
-// Meetings + reminders sources are wired in chunk 06; this renders the panel + empty state now.
-export function TodayPanel({
-  meetings,
-  reminders,
-}: {
-  meetings: TodayItem[];
-  reminders: TodayItem[];
-}) {
+const ACCENT: Record<TodayAccent, { bar: string; chip: string }> = {
+  progress: { bar: "bg-progress", chip: "bg-progress-soft text-progress" },
+  pending: { bar: "bg-pending", chip: "bg-pending-soft text-pending" },
+  posted: { bar: "bg-posted", chip: "bg-posted-soft text-posted" },
+  paid: { bar: "bg-paid", chip: "bg-paid-soft text-paid" },
+  danger: { bar: "bg-danger", chip: "bg-danger-soft text-danger" },
+};
+
+export function TodayPanel({ items }: { items: TodayItem[] }) {
   const { t } = useTranslation();
-  const items = [...meetings, ...reminders];
+
+  if (items.length === 0) {
+    return (
+      <p className="rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-card">
+        {t("dashboard.todayEmpty")}
+      </p>
+    );
+  }
 
   return (
-    <section className="space-y-3 rounded-md border p-4">
-      <h2 className="font-semibold">{t("dashboard.today")}</h2>
-      {items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">{t("dashboard.todayEmpty")}</p>
-      ) : (
-        <ul className="space-y-2">
-          {items.map((item) => (
-            <li key={item.id} className="flex items-center justify-between gap-3 text-sm">
-              <span className="min-w-0">{item.title}</span>
-              <span className="shrink-0 text-muted-foreground">{item.at}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
+    <ul className="space-y-2">
+      {items.map((item) => {
+        const accent = ACCENT[item.accent];
+        return (
+          <li key={item.id} className="flex items-center gap-3 rounded-2xl bg-card p-3 shadow-card">
+            <span className={cn("h-10 w-1 shrink-0 rounded-full", accent.bar)} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold">{item.title}</p>
+              {item.subtitle && (
+                <p className="truncate text-xs text-muted-foreground">{item.subtitle}</p>
+              )}
+            </div>
+            <span className={cn("shrink-0 rounded-lg px-2.5 py-1 text-xs font-semibold", accent.chip)}>
+              {item.at}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

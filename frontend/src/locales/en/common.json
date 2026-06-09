@@ -39,6 +39,11 @@
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "This month at a glance.",
+    "greeting": "Hi,",
+    "thisMonth": "This Month",
+    "collectionRate": "Collection rate",
+    "quickAccess": "Quick access",
+    "overdue": "Overdue",
     "today": "Today",
     "todayEmpty": "Nothing due in the next 24 hours.",
     "invoiced": "Invoiced this month",
@@ -59,7 +64,11 @@
     "payments": "Payments",
     "meetings": "Meetings",
     "snap": "Snap",
-    "reports": "Reports"
+    "reports": "Reports",
+    "home": "Home",
+    "calendar": "Calendar",
+    "insights": "Insights",
+    "create": "Create"
   },
   "common": {
     "save": "Save",
@@ -105,6 +114,7 @@
   "deals": {
     "title": "Deals",
     "subtitle": "Track each brand deal from agreed to posted.",
+    "count": "{{count}} deals",
     "addAction": "Add deal",
     "deadline": "Deadline",
     "noMatches": "No deals match these filters.",
