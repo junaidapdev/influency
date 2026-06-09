@@ -49,7 +49,8 @@
   "nav": {
     "dashboard": "Dashboard",
     "brands": "Brands",
-    "deals": "Deals"
+    "deals": "Deals",
+    "payments": "Payments"
   },
   "common": {
     "save": "Save",
@@ -147,6 +148,53 @@
       "amount": "Enter an amount greater than zero.",
       "save": "We could not save this deal. Try again.",
       "load": "We could not load your deals. Refresh to try again."
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "subtitle": "Track money expected and received across your deals.",
+    "addAction": "Add payment",
+    "markReceived": "Mark received",
+    "expectedOn": "Expected",
+    "receivedOn": "Received",
+    "noPending": "No pending payments.",
+    "noReceived": "No received payments yet.",
+    "tabs": {
+      "pending": "Pending",
+      "received": "Received"
+    },
+    "status": {
+      "pending": "Pending",
+      "received": "Received",
+      "overdue": "Overdue"
+    },
+    "method": {
+      "bank": "Bank transfer",
+      "cash": "Cash",
+      "other": "Other"
+    },
+    "fields": {
+      "deal": "Deal",
+      "dealPlaceholder": "Select a deal",
+      "amount": "Amount (SAR)",
+      "expectedDate": "Expected date",
+      "method": "Method",
+      "methodNone": "Not set",
+      "notes": "Notes"
+    },
+    "form": {
+      "addTitle": "Add payment"
+    },
+    "empty": {
+      "body": "No payments yet. Add a payment to a deal to start tracking what you're owed.",
+      "action": "Add your first payment",
+      "needDeal": "Create a deal first, then you can add payments to it."
+    },
+    "errors": {
+      "deal": "Select a deal.",
+      "amount": "Enter an amount greater than zero.",
+      "save": "We could not save this payment. Try again.",
+      "load": "We could not load your payments. Refresh to try again."
     }
   }
 }

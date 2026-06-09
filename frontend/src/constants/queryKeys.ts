@@ -8,4 +8,5 @@ export const queryKeys = {
   // Prefix used to invalidate every deals query for a user, regardless of active filters.
   dealsByUser: (userId: string) => ["deals", userId] as const,
   deals: (userId: string, filters: DealFilters) => ["deals", userId, filters] as const,
+  payments: (userId: string) => ["payments", userId] as const,
 } as const;
