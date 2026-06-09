@@ -24,6 +24,18 @@ export function formatDualCalendarDate(isoDate: string, locale: Locale): DualCal
     : { primary: gregorian, secondary: hijri };
 }
 
+/** A "YYYY-MM" month key → a localized Gregorian "MMM YYYY" label (matches the Gregorian grid). */
+export function formatMonthLabel(yyyyMm: string, locale: Locale): string {
+  const parts = yyyyMm.split("-");
+  const year = Number(parts[0]);
+  const monthIndex = Number(parts[1]) - 1;
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
+    calendar: "gregory",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(year, monthIndex, 1));
+}
+
 /** Local time-of-day (e.g. "2:30 PM" / "٢:٣٠ م") for a stored ISO timestamp. */
 export function formatTime(isoDate: string, locale: Locale): string {
   return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
