@@ -11,6 +11,7 @@ export const ROUTES = {
   meetings: "/meetings",
   snap: "/snap",
   reports: "/reports",
+  settings: "/settings",
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];

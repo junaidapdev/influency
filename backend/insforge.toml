@@ -1,17 +1,47 @@
-# InsForge config-as-code. Apply with: npx @insforge/cli config apply
-# Secrets are referenced as env(NAME) and are NEVER stored in this file (it is committed).
-# This is a structured stub for chunk 00. Later chunks fill it in:
-#   - chunk 01: [auth] — enable Google OAuth + email/password, require email verification
-#   - chunk 07: [storage] — upload size limits for Snap screenshots
+# InsForge config-as-code. Apply with: npx @insforge/cli config apply --file backend/insforge.toml
+# Generated from the live project via `config export`; commit the diff after applying.
+# Secrets are NEVER stored here (this file is committed). OAuth client secrets live as
+# InsForge secrets, and the Google OAuth app is configured in Google Cloud Console.
 #
-# Run `npx @insforge/cli config export` to generate the real file from the live project,
-# then commit the diff. Do not hand-write sections without confirming the schema via the CLI.
+# allowed_redirect_urls is the server-side allowlist that signInWithOAuth's `redirectTo`
+# is validated against. Every origin the app runs on (local + each deployed domain) must
+# be listed here, or OAuth fails to start with 403/400 before reaching Google.
 
-# [auth]
-#   email_password_enabled = true
-#   email_verification_required = true
-#   [auth.oauth.google]
-#   enabled = true
+[auth]
+allowed_redirect_urls = [
+  "http://localhost:5173",
+  "http://localhost:5173/dashboard",
+  "http://localhost:5173/login",
+  "https://influency-rho.vercel.app",
+  "https://influency-rho.vercel.app/dashboard",
+  "https://influency-rho.vercel.app/login",
+]
+require_email_verification = true
+verify_email_method = "code"
+reset_password_method = "code"
+disable_signup = false
 
-# [storage]
-#   max_upload_mb = 10
+[auth.password]
+min_length = 6
+require_number = false
+require_lowercase = false
+require_uppercase = false
+require_special_char = false
+
+[auth.smtp]
+enabled = false
+host = ""
+port = 465
+username = ""
+sender_email = ""
+sender_name = ""
+min_interval_seconds = 60
+
+[storage]
+max_file_size_mb = 50
+
+[realtime]
+retention_days = 0
+
+[schedules]
+retention_days = 7
