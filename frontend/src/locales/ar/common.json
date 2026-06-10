@@ -226,8 +226,9 @@
     "prevMonth": "الشهر السابق",
     "nextMonth": "الشهر التالي",
     "moreCount": "+{{count}} المزيد",
+    "agendaEmpty": "لا اجتماعات من هذا اليوم فصاعداً.",
     "views": {
-      "calendar": "تقويم",
+      "calendar": "شهر",
       "list": "قائمة"
     },
     "status": {

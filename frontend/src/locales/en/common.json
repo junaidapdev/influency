@@ -226,8 +226,9 @@
     "prevMonth": "Previous month",
     "nextMonth": "Next month",
     "moreCount": "+{{count}} more",
+    "agendaEmpty": "No meetings from this day onward.",
     "views": {
-      "calendar": "Calendar",
+      "calendar": "Month",
       "list": "List"
     },
     "status": {

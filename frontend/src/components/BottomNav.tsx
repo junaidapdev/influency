@@ -74,13 +74,13 @@ export function BottomNav() {
           </NavLink>
         ))}
 
-        <div className="absolute inset-x-0 -top-5 flex justify-center">
+        <div className="pointer-events-none absolute inset-x-0 -top-5 flex justify-center">
           <button
             type="button"
             aria-label={t("nav.create")}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
-            className="flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-fab transition-transform active:scale-95"
+            className="pointer-events-auto flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-fab transition-transform active:scale-95"
           >
             <Plus className={cn("size-6 transition-transform", menuOpen && "rotate-45")} />
           </button>
