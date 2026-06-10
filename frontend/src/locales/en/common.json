@@ -68,7 +68,8 @@
     "home": "Home",
     "calendar": "Calendar",
     "insights": "Insights",
-    "create": "Create"
+    "create": "Create",
+    "settings": "Settings"
   },
   "common": {
     "save": "Save",
@@ -310,5 +311,24 @@
     "collectionRate": "Collection rate",
     "empty": "No brand data yet. Add deals and payments to see this report.",
     "error": "We could not load this report. Refresh to try again."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Your account and preferences.",
+    "language": "Language",
+    "locale": { "ar": "العربية", "en": "English" },
+    "profile": "Profile",
+    "displayName": "Display name",
+    "reminderLead": "Default reminder lead time",
+    "reminderLeadHint": "Applies to reminders created from now on.",
+    "lead": {
+      "15": "15 minutes before",
+      "30": "30 minutes before",
+      "60": "1 hour before",
+      "120": "2 hours before",
+      "1440": "1 day before"
+    },
+    "saved": "Saved",
+    "errors": { "displayName": "Keep it under 80 characters." }
   }
 }

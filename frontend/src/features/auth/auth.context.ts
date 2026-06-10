@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { type UserSchema } from "@insforge/sdk";
 import { ERROR_CODES } from "@/constants/errors";
 import { type Locale } from "@/constants/i18n";
-import { type AppUser } from "@/features/auth/appUser.api";
+import { type AppUser, type AppUserProfilePatch } from "@/features/auth/appUser.api";
 import {
   type EmailPasswordValues,
   type SignUpValues,
@@ -22,6 +22,7 @@ export interface AuthContextValue {
   signInWithGoogle: (redirectTo: string) => Promise<void>;
   signOut: () => Promise<void>;
   setLocale: (locale: Locale) => Promise<void>;
+  updateProfile: (patch: AppUserProfilePatch) => Promise<void>;
   refreshSession: () => Promise<void>;
 }
 

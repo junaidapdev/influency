@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
 import { BrandAvatar } from "@/components/BrandAvatar";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { type Locale } from "@/constants/i18n";
@@ -19,7 +19,7 @@ import { type TodayItem } from "@/features/dashboard/dashboard.types";
 export function DashboardPage() {
   const { t, i18n } = useTranslation();
   const locale = i18n.language as Locale;
-  const { user, appUser, signOut } = useAuth();
+  const { user, appUser } = useAuth();
   const { summaryQuery, overduePaymentsQuery, pastDeadlineDeals, dealTitleById, today } =
     useDashboard();
   const { monthlyQuery } = useReports();
@@ -56,18 +56,22 @@ export function DashboardPage() {
   return (
     <div className="space-y-5">
       <header className="flex items-center justify-between gap-3 pt-1">
-        <div className="flex min-w-0 items-center gap-3">
+        <Link to={ROUTES.settings} className="flex min-w-0 items-center gap-3">
           <BrandAvatar name={name || "?"} seed={user?.id} />
           <div className="min-w-0">
             <p className="text-sm text-muted-foreground">{t("dashboard.greeting")}</p>
             <p className="truncate text-lg font-bold leading-tight">{name || t("app.name")}</p>
           </div>
-        </div>
+        </Link>
         <div className="flex shrink-0 items-center gap-2">
           <LanguageToggle />
-          <Button variant="outline" size="sm" onClick={() => void signOut()}>
-            {t("auth.signOut")}
-          </Button>
+          <Link
+            to={ROUTES.settings}
+            aria-label={t("nav.settings")}
+            className="flex size-9 items-center justify-center rounded-full bg-card text-muted-foreground shadow-card"
+          >
+            <Settings className="size-5" />
+          </Link>
         </div>
       </header>
 
