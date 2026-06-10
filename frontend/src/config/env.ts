@@ -17,7 +17,10 @@ if (!parsed.success) {
   throw new Error(`Invalid frontend environment configuration: ${missing}`);
 }
 
+// Strip any trailing slash: a trailing slash makes the SDK build `…insforge.app//api/...`,
+// whose double slash 404s on the database/storage/function routes (the deploy env var has
+// carried one before). Normalize here, the single place env is read, so every consumer is safe.
 export const env = {
-  insforgeUrl: parsed.data.VITE_INSFORGE_URL,
+  insforgeUrl: parsed.data.VITE_INSFORGE_URL.replace(/\/+$/, ""),
   insforgeAnonKey: parsed.data.VITE_INSFORGE_ANON_KEY,
 } as const;
