@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { AppHeader } from "@/components/AppHeader";
 import { SegmentedTabs } from "@/components/SegmentedTabs";
 import { EMPTY_DEAL_FILTERS } from "@/constants/deals";
+import { type Locale } from "@/constants/i18n";
 import { MEETING_VIEW, type MeetingView } from "@/constants/meetings";
 import { useBrands } from "@/hooks/useBrands";
 import { useDeals } from "@/hooks/useDeals";
@@ -17,7 +18,8 @@ import { type Meeting, type MeetingFormValues } from "@/features/meetings/meetin
 type DialogState = { open: false } | { open: true; meeting: Meeting | null };
 
 export function MeetingsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language as Locale;
   const now = new Date();
   const [view, setView] = useState<MeetingView>(MEETING_VIEW.CALENDAR);
   const [cursor, setCursor] = useState({ year: now.getFullYear(), monthIndex: now.getMonth() });
@@ -27,9 +29,17 @@ export function MeetingsPage() {
   const { dealsQuery } = useDeals(EMPTY_DEAL_FILTERS);
 
   const meetings = meetingsQuery.data ?? [];
-  const brands = brandsQuery.data ?? [];
+  const brands = useMemo(() => brandsQuery.data ?? [], [brandsQuery.data]);
   const deals = dealsQuery.data ?? [];
   const isMutating = updateMutation.isPending || cancelMutation.isPending;
+
+  const brandNameById = useMemo(() => {
+    const record: Record<string, string> = {};
+    for (const brand of brands) {
+      record[brand.id] = locale === "ar" ? brand.name_ar : brand.name_en;
+    }
+    return record;
+  }, [brands, locale]);
 
   function prevMonth() {
     setCursor((c) =>
@@ -65,8 +75,8 @@ export function MeetingsPage() {
 
       <SegmentedTabs
         options={[
-          { value: MEETING_VIEW.CALENDAR, label: t("meetings.views.calendar") },
           { value: MEETING_VIEW.LIST, label: t("meetings.views.list") },
+          { value: MEETING_VIEW.CALENDAR, label: t("meetings.views.calendar") },
         ]}
         value={view}
         onChange={setView}
@@ -83,7 +93,9 @@ export function MeetingsPage() {
         <MeetingsEmptyState onAdd={() => setDialog({ open: true, meeting: null })} />
       ) : view === MEETING_VIEW.CALENDAR ? (
         <MeetingCalendar
+          key={`${cursor.year}-${cursor.monthIndex}`}
           meetings={meetings}
+          brandNameById={brandNameById}
           year={cursor.year}
           monthIndex={cursor.monthIndex}
           onPrev={prevMonth}
