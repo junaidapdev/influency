@@ -90,3 +90,28 @@ export async function updateAppUserLocale(userId: string, locale: Locale): Promi
 
   return parseAppUser(data);
 }
+
+export interface AppUserProfilePatch {
+  display_name?: string | null;
+  reminder_lead_minutes?: number;
+  avatar_url?: string | null;
+}
+
+/** Update editable profile/preference fields (RLS scopes the row to the caller). */
+export async function updateAppUserProfile(
+  userId: string,
+  patch: AppUserProfilePatch,
+): Promise<AppUser> {
+  const { data, error } = await insforge.database
+    .from(AUTH_TABLES.APP_USERS)
+    .update(patch)
+    .eq("user_id", userId)
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return parseAppUser(data);
+}

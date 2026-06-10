@@ -4,7 +4,13 @@ import i18n from "@/lib/i18n";
 import { insforge } from "@/lib/insforge";
 import { ERROR_CODES } from "@/constants/errors";
 import { type Locale } from "@/constants/i18n";
-import { ensureAppUser, updateAppUserLocale, type AppUser } from "@/features/auth/appUser.api";
+import {
+  ensureAppUser,
+  updateAppUserLocale,
+  updateAppUserProfile,
+  type AppUser,
+  type AppUserProfilePatch,
+} from "@/features/auth/appUser.api";
 import {
   type EmailPasswordValues,
   type SignUpValues,
@@ -134,6 +140,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [user],
   );
 
+  const updateProfile = useCallback(
+    async (patch: AppUserProfilePatch) => {
+      if (!user) {
+        return;
+      }
+
+      const updated = await updateAppUserProfile(user.id, patch);
+      setAppUser(updated);
+    },
+    [user],
+  );
+
   const value = useMemo<AuthContextValue>(
     () => ({
       status,
@@ -146,6 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signInWithGoogle,
       signOut,
       setLocale,
+      updateProfile,
       refreshSession,
     }),
     [
@@ -159,6 +178,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signInWithGoogle,
       signOut,
       setLocale,
+      updateProfile,
       refreshSession,
     ],
   );

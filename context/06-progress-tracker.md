@@ -3,7 +3,7 @@
 > The agent updates this after every chunk. Humans read it to know where things stand. Keep it current; a stale tracker is worse than none.
 
 ## Current phase
-**Phase 8 — Reports: implementation complete, PR open, runtime verification pending.** Chunks 01–07 merged into `develop` (PRs #2–#8); the app has now been signed into and runs. Chunk 08 built on `chunk/08-reports` off `develop`; PR open into `develop`. Static checks clean; `report_monthly()` + `report_by_brand()` RPCs applied live (`20260609220000`, STABLE, SECURITY INVOKER) and smoke-tested (correct 12-month zero-filled shape). **Not yet runtime-verified:** that the chart + per-brand table match hand-calculated totals with seeded data (PRD #5), the RTL chart rendering, and the second-user report-isolation test.
+**Phase 9 — Settings + deploy (final chunk): code complete, PR open.** Chunks 01–08 + the design-system pass merged into `develop` (PRs #2–#10); the app is signed-in, running, and deployed to Vercel. Chunk 09 built on `chunk/09-settings-deploy` off `develop`; PR open into `develop`. `/settings` (language, default reminder lead time, display name, sign-out) persists to `app_users` via the new `updateProfile` on the auth context. Deploy config added (`frontend/vercel.json` SPA rewrite). Standards sweep clean: **0 `console.log`, 0 `any`**, one shared edge-function envelope + HTTP codes. Static checks green. **Manual finalization pending (human):** confirm prod env vars in Vercel, lock Google OAuth redirect URIs to the prod domain, and the second-user RLS spot-check; then merge → `develop` → `main`.
 
 ## Chunks
 
@@ -24,8 +24,11 @@
 
 - **07 — Snap analytics (upload + AI extraction)** — merged into `develop` via PR #8 (incl. review fixes: pending-only extraction to close the rate-limit bypass, realtime removed for the cross-tenant gap, pdf try/finally, form reseed on edit). `snap_reports` + RLS, private `snaps` bucket, `extract-snap-report` edge function (OpenAI vision, structured output, rate-limit). **Code merged.**
 
+- **08 — Reports** — merged into `develop` (PR #9). `report_monthly()` + `report_by_brand()` aggregate RPCs; `/reports` Recharts invoiced-vs-collected chart + brand×month table (collection rate, divide-by-zero guard). **Code merged.**
+- **Design system** — merged into `develop` (PR #10, incl. review fixes). Tokenized design (lavender canvas, semantic status tokens), bottom nav + FAB, AppHeader, Card/BrandAvatar/SegmentedTabs, rebuilt dashboard, all screens restyled mobile-first. **Code merged.**
+
 ### In progress
-- **08 — Reports** — code complete, PR open into `develop` (not merged). `report_monthly()` + `report_by_brand()` aggregate RPCs (STABLE, SECURITY INVOKER + `auth.uid()`, last-12-months, no N+1; applied live). `features/reports/` (schema/types/api) + `useReports` hook (keyed by current month); `/reports` page with a **Recharts** invoiced-vs-collected bar chart (RTL-tolerant: `reversed` X-axis + right Y-axis in Arabic) and a brand×month table (deal count, total SAR, collection rate with a divide-by-zero guard). `lib` gained `formatMonthLabel` + `formatPercent`. Awaiting human review + runtime verification.
+- **09 — Settings + deploy (final chunk)** — code complete, PR open into `develop` (not merged). `/settings`: language toggle (persists `locale`), default reminder lead time (persists `reminder_lead_minutes`; affects FUTURE reminders), display name, sign-out — all via a new `updateProfile` on the auth context (RLS-scoped `app_users` update, no new migration; `avatar_url` already existed). Reached from the dashboard header (avatar + gear icon). Deploy: `frontend/vercel.json` SPA rewrite (client routing), env vars documented in `.env.example`. Standards sweep: 0 `console.log`, 0 `any`, one shared edge-function envelope + HTTP codes. Awaiting human review + manual deploy finalization (Vercel prod env vars, Google OAuth redirect URIs, second-user RLS spot-check).
 
 ### Blocked
 _(none)_
